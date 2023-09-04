@@ -1,52 +1,31 @@
-#include "winapp.h"
 #include "d3dapp.h"
+#include "d3d/d3dutil.h"
 
-#include "imgui.h"
-#include "imgui_impl_win32.h"
-#include "imgui_impl_dx11.h"
+#include <imgui.h>
+
 #include <d3d11.h>
 
 #include <iostream>
 #include <cassert>
 
 
-//int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nShowCmd)
-//{
-//	WinApp winApp{};
-//
-//	winApp.CreateWindowsApp();
-//
-//	winApp.Run();
-//}
-
-
-
-int main()
+void RunWithImGui()
 {
-	WinApp winApp{};
-	winApp.CreateWindowsApp();
-	
+	d3d::D3DApp d3dApp{};
+	HR(d3dApp.CreateD3DApp());
 
-	D3DApp d3dApp{};
-	d3dApp.CreateD3DApp(winApp.GetHandle());
-
-	winApp.Show();
-	
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io{ ImGui::GetIO() };
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-	
-	// Init only sets up ImGui to work with the window/device it doesn't create one
 
-	ImGui_ImplWin32_Init(winApp.GetHandle());
+	// Sets up ImGui to work with the window/device
+	d3dApp.ImGuiInit();
 
-	ImGui_ImplDX11_Init(d3dApp.GetDevice(), d3dApp.GetContext());
-
-	bool showDemo{ true };
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	bool showDemo{ false };
+	const ImVec4 clear_color{ 0.45f, 0.55f, 0.60f, 0.10f };
 	const float clear_color_with_alpha[4]{
 		clear_color.x * clear_color.w,
 		clear_color.y * clear_color.w,
@@ -58,34 +37,60 @@ int main()
 
 	while (!done)
 	{
-		done = winApp.CheckMessages();
+		done = d3dApp.CheckMessages();
 
+		d3dApp.ImGuiNewFrame();
 
-		ImGui_ImplDX11_NewFrame();
-		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
 		ImGui::ShowDemoWindow(&showDemo);
 
 		ImGui::Render();
 
-		d3dApp.SetRenderTargets(clear_color_with_alpha);
+		d3dApp.SetRenderTargets(&clear_color_with_alpha[0]);
 
-		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+		d3dApp.Draw();
 
-
+		d3dApp.ImGuiRenderDrawData();
 
 		d3dApp.PresentSwapChain();
 	}
 
-	ImGui_ImplDX11_Shutdown();
-	ImGui_ImplWin32_Shutdown();
+	d3dApp.ImGuiShutdown();
+
 	ImGui::DestroyContext();
-
-	d3dApp.CleanupD3DApp();
-
-	winApp.CleanupWinApp();
+}
 
 
+void RunWithoutImGui()
+{
+	d3d::D3DApp d3dApp{};
+	HR(d3dApp.CreateD3DApp());
+
+	const float clear_color[4]{ 0.45f, 0.55f, 0.60f, 1.0f };
+
+	bool done = false;
+
+	while (!done)
+	{
+		done = d3dApp.CheckMessages();
+
+		d3dApp.SetRenderTargets(&clear_color[0]);
+
+		d3dApp.Draw();
+
+		d3dApp.PresentSwapChain();
+	}
+}
+
+
+
+
+int main()
+{
+	RunWithoutImGui();
+
+	d3dutil::ReportLiveObjects();
+	
 	return 0;
 }

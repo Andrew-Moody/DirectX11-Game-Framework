@@ -6,13 +6,13 @@
 #include <string>
 
 
-bool WinApp::CreateWindowsApp()
+HRESULT WinApp::CreateWindowsApp(int width, int height)
 {
 	// Traditionally these would be passed into winmain and saved as globals (hInstance, lpCmdLine, nCmdShow)
 	// That can be avoided by getting them manually
-	HINSTANCE hInstance = GetModuleHandle(nullptr);
+	m_hinstance = GetModuleHandle(nullptr);
 
-	LPWSTR lpCmdLine = GetCommandLineW();
+	m_lpCmdLine = GetCommandLineW();
 
 	// Unfortunately this does not work correctly. From what I can tell its a visual studio quirk (that might be fixable but with side effects)
 	// Seems wShowWindow is set to SW_HIDE (something about a potential malware attack vector)
@@ -24,15 +24,13 @@ bool WinApp::CreateWindowsApp()
 
 	m_nShowCmd = SW_SHOWDEFAULT; // Overriding nCmdShow since it seems to not be getting set properly 
 
-
-
 	// Setup the window class
 	m_wndClass.cbSize = sizeof(m_wndClass);
 	m_wndClass.style = CS_CLASSDC;
 	m_wndClass.lpfnWndProc = WndProc;
 	m_wndClass.cbClsExtra = 0;
 	m_wndClass.cbWndExtra = 0;
-	m_wndClass.hInstance = hInstance;
+	m_wndClass.hInstance = m_hinstance;
 	m_wndClass.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
 	m_wndClass.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	m_wndClass.hbrBackground = static_cast<HBRUSH>(GetStockObject(WHITE_BRUSH));
@@ -43,30 +41,40 @@ bool WinApp::CreateWindowsApp()
 	if (!RegisterClassExW(&m_wndClass))
 	{
 		MessageBox(nullptr, L"RegisterClassExW Failed", nullptr, 0);
-		return false;
+		return E_FAIL;
 	}
 
-	m_mainWindow = CreateWindowW(
+	m_mainWindow = CreateWindowExW(
+		0l,
 		m_className,
 		L"WinApp",
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
+		width,
+		height,
 		nullptr,
 		nullptr,
-		hInstance,
+		m_hinstance,
 		nullptr
 	);
 
 	if (!m_mainWindow)
 	{
 		MessageBox(nullptr, L"CreateWindow Failed", nullptr, 0);
-		return false;
+		return E_FAIL;
 	}
 
-	return true;
+	GetWindowRect(m_mainWindow, &m_rect);
+
+	return S_OK;
+}
+
+
+WinApp::~WinApp()
+{
+	DestroyWindow(m_mainWindow);
+	UnregisterClassW(m_wndClass.lpszClassName, m_wndClass.hInstance);
 }
 
 
@@ -93,13 +101,6 @@ bool WinApp::CheckMessages()
 	}
 
 	return quit;
-}
-
-
-void WinApp::CleanupWinApp()
-{
-	DestroyWindow(m_mainWindow);
-	UnregisterClassW(m_wndClass.lpszClassName, m_wndClass.hInstance);
 }
 
 

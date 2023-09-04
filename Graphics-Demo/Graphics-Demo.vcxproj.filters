@@ -45,6 +45,12 @@
     <ClCompile Include="src\d3dapp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\d3d\d3dutil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\d3d\d3ddevice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\winapp.h">
@@ -53,5 +59,15 @@
     <ClInclude Include="src\d3dapp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\d3d\d3dutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\d3d\d3ddevice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="src\hlsl\vertexshader.hlsl" />
+    <FxCompile Include="src\hlsl\pixelshader.hlsl" />
   </ItemGroup>
 </Project>
