@@ -38,14 +38,20 @@ namespace d3dutil
 		{
 			OutputDebugStringW(stream.str().c_str());
 		}
-		
 	}
 
 
-	void Output(const char* msg)
+	void Output(const char* msg) noexcept
 	{
 		OutputDebugStringA("\n");
 		OutputDebugStringA(msg);
+		OutputDebugStringA("\n");
+	}
+
+	void Output(const std::stringstream& msg)
+	{
+		OutputDebugStringA("\n");
+		OutputDebugStringA(msg.str().c_str());
 		OutputDebugStringA("\n");
 	}
 

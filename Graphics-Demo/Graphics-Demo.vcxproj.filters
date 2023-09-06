@@ -39,30 +39,81 @@
     <ClCompile Include="..\Dependencies\imgui\backends\imgui_impl_dx11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\winapp.cpp">
+    <ClCompile Include="src\d3d\winapp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\d3dapp.cpp">
+    <ClCompile Include="src\d3d\d3dapp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\d3d\d3dutil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\d3d\d3ddevice.cpp">
+    <ClCompile Include="src\d3d\vertexbuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\d3d\indexbuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\d3d\constantbuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\d3d\cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\d3d\inputlayout.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\d3d\vertexshader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\d3d\pixelshader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\d3d\bytecode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\winapp.h">
+    <ClInclude Include="src\d3d\winapp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\d3dapp.h">
+    <ClInclude Include="src\d3d\d3dapp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\d3d\d3dutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\d3d\d3ddevice.h">
+    <ClInclude Include="src\d3d\ibindable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\d3d\vertexbuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\d3d\indexbuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\d3d\constantbuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\d3d\idrawable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\d3d\cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\d3d\inputlayout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\d3d\vertexshader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\d3d\pixelshader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\d3d\bytecode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\d3d\vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

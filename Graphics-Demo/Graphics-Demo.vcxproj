@@ -152,17 +152,34 @@
     <ClCompile Include="..\Dependencies\imgui\imgui_draw.cpp" />
     <ClCompile Include="..\Dependencies\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\Dependencies\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="src\d3dapp.cpp" />
-    <ClCompile Include="src\d3d\d3ddevice.cpp" />
+    <ClCompile Include="src\d3d\bytecode.cpp" />
+    <ClCompile Include="src\d3d\constantbuffer.cpp" />
+    <ClCompile Include="src\d3d\cube.cpp" />
+    <ClCompile Include="src\d3d\d3dapp.cpp" />
     <ClCompile Include="src\d3d\d3dutil.cpp" />
+    <ClCompile Include="src\d3d\indexbuffer.cpp" />
+    <ClCompile Include="src\d3d\inputlayout.cpp" />
+    <ClCompile Include="src\d3d\pixelshader.cpp" />
+    <ClCompile Include="src\d3d\vertexbuffer.cpp" />
+    <ClCompile Include="src\d3d\vertexshader.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\winapp.cpp" />
+    <ClCompile Include="src\d3d\winapp.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\d3dapp.h" />
-    <ClInclude Include="src\d3d\d3ddevice.h" />
+    <ClInclude Include="src\d3d\bytecode.h" />
+    <ClInclude Include="src\d3d\constantbuffer.h" />
+    <ClInclude Include="src\d3d\cube.h" />
+    <ClInclude Include="src\d3d\d3dapp.h" />
     <ClInclude Include="src\d3d\d3dutil.h" />
-    <ClInclude Include="src\winapp.h" />
+    <ClInclude Include="src\d3d\ibindable.h" />
+    <ClInclude Include="src\d3d\idrawable.h" />
+    <ClInclude Include="src\d3d\indexbuffer.h" />
+    <ClInclude Include="src\d3d\inputlayout.h" />
+    <ClInclude Include="src\d3d\pixelshader.h" />
+    <ClInclude Include="src\d3d\vertex.h" />
+    <ClInclude Include="src\d3d\vertexbuffer.h" />
+    <ClInclude Include="src\d3d\vertexshader.h" />
+    <ClInclude Include="src\d3d\winapp.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\hlsl\pixelshader.hlsl">

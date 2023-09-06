@@ -1,4 +1,4 @@
-#include "d3dapp.h"
+#include "d3d/d3dapp.h"
 #include "d3d/d3dutil.h"
 
 #include <imgui.h>
@@ -9,10 +9,9 @@
 #include <cassert>
 
 
-void RunWithImGui()
+void RunWithImGui(int width, int height)
 {
-	d3d::D3DApp d3dApp{};
-	HR(d3dApp.CreateD3DApp());
+	d3d::D3DApp d3dApp{width, height};
 
 
 	IMGUI_CHECKVERSION();
@@ -62,10 +61,9 @@ void RunWithImGui()
 }
 
 
-void RunWithoutImGui()
+void RunWithoutImGui(int width, int height)
 {
-	d3d::D3DApp d3dApp{};
-	HR(d3dApp.CreateD3DApp());
+	d3d::D3DApp d3dApp{width, height};
 
 	const float clear_color[4]{ 0.45f, 0.55f, 0.60f, 1.0f };
 
@@ -88,7 +86,10 @@ void RunWithoutImGui()
 
 int main()
 {
-	RunWithoutImGui();
+	const int windowWidth{ 800 };
+	const int windowHeight{ 600 };
+
+	RunWithoutImGui(windowWidth, windowHeight);
 
 	d3dutil::ReportLiveObjects();
 	
