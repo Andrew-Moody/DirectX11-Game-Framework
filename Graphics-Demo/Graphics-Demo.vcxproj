@@ -164,6 +164,7 @@
     <ClCompile Include="src\d3d\vertexshader.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\d3d\winapp.cpp" />
+    <ClCompile Include="src\frametime.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\d3d\bytecode.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="src\d3d\vertexbuffer.h" />
     <ClInclude Include="src\d3d\vertexshader.h" />
     <ClInclude Include="src\d3d\winapp.h" />
+    <ClInclude Include="src\frametime.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\hlsl\pixelshader.hlsl">
