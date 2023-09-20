@@ -1,29 +1,30 @@
 #pragma once
-
-#include <d3d11.h>
-#include <wrl.h>
-
 #include "ibindable.h"
+
+//#include <d3d11.h>
+#include <wrl/client.h>
 
 #include <vector>
 
+struct ID3D11InputLayout;
+struct D3D11_INPUT_ELEMENT_DESC;
+
 namespace d3d
 {
-	using Microsoft::WRL::ComPtr;
+	class D3DApp;
 
 	class InputLayout : public IBindable
 	{
 	public:
 
-		void bind(ID3D11DeviceContext& context) override;
+		void bind(D3DApp& app) override;
 
-		InputLayout(ID3D11Device& device, const std::vector<D3D11_INPUT_ELEMENT_DESC>& inputDescs, const std::vector<char>& bytecode);
+		InputLayout(D3DApp& app, const std::vector<D3D11_INPUT_ELEMENT_DESC>& inputDescs, const std::vector<char>& bytecode);
 
 		InputLayout() = default;
 
 	private:
 
-		D3D11_INPUT_ELEMENT_DESC m_inputDesc{};
-		ComPtr<ID3D11InputLayout> m_inputLayout{};
+		Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout{};
 	};
 }

@@ -1,20 +1,20 @@
 #include "vertexbuffer.h"
-
+#include "d3dapp.h"
 #include "d3dutil.h"
 
 #include <sstream>
 
 namespace d3d
 {
-	void VertexBuffer::bind(ID3D11DeviceContext& context)
+	void VertexBuffer::bind(D3DApp& app)
 	{
 		DB_LOG("Binding VertexBuffer");
 
-		context.IASetVertexBuffers(0u, 1u, m_buffer.GetAddressOf(), &m_strides, &m_offsets);
+		app.getContext().IASetVertexBuffers(0u, 1u, m_buffer.GetAddressOf(), &m_strides, &m_offsets);
 	}
 
 
-	VertexBuffer::VertexBuffer(ID3D11Device& device, const void* vxArray, UINT byteWidth, UINT stride)
+	VertexBuffer::VertexBuffer(D3DApp& app, const void* vxArray, UINT byteWidth, UINT stride)
 		: m_strides{stride}
 	{
 		DB_LOG("Creating VertexBuffer, ByteWidth: " << byteWidth << ", Stride: " << stride << '\n');
@@ -31,9 +31,8 @@ namespace d3d
 		m_subresourceData.pSysMem = vxArray;
 
 		// Note existing buffer gets released
-		HR(device.CreateBuffer(&m_bufferDesc, &m_subresourceData, &m_buffer));
+		HR(app.getDevice().CreateBuffer(&m_bufferDesc, &m_subresourceData, &m_buffer));
 
 		DB_ASSERT(m_buffer.Get());
 	}
-
 }

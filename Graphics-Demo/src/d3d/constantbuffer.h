@@ -1,19 +1,22 @@
 #pragma once
-
 #include "ibindable.h"
-#include <wrl.h>
+
+#include <wrl/client.h>
+
+struct ID3D11Buffer;
 
 namespace d3d
-{
-	using Microsoft::WRL::ComPtr;
-
+{	
+	template<typename T>
 	class ConstantBuffer : public IBindable
 	{
 	public:
 
-		void bind(ID3D11DeviceContext& context) override;
+		void bind(D3DApp& app) override;
 
-		ConstantBuffer(ID3D11Device& device, const void* data, UINT bytewidth);
+		void setData(D3DApp& app, const T& data);
+
+		ConstantBuffer(D3DApp& app, const T& data);
 
 		ConstantBuffer() = default;
 
@@ -21,8 +24,6 @@ namespace d3d
 
 	private:
 
-		D3D11_BUFFER_DESC m_bufferDesc{};
-		D3D11_SUBRESOURCE_DATA m_subresourceData{};
-		ComPtr<ID3D11Buffer> m_buffer;
+		Microsoft::WRL::ComPtr<ID3D11Buffer> m_buffer{};
 	};
 }

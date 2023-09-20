@@ -1,22 +1,22 @@
 #include "vertexshader.h"
-
+#include "d3dapp.h"
 #include "bytecode.h"
 
 #include "d3dutil.h"
 
 namespace d3d
 {
-	void VertexShader::bind(ID3D11DeviceContext& context)
+	void VertexShader::bind(D3DApp& app)
 	{
 		DB_LOG("Binding VertexShader");
 
-		context.VSSetShader(m_vertexShader.Get(), nullptr, 0u);
+		app.getContext().VSSetShader(m_vertexShader.Get(), nullptr, 0u);
 	}
 
 
-	VertexShader::VertexShader(ID3D11Device& device, const wchar_t* filepath)
+	VertexShader::VertexShader(D3DApp& app, const wchar_t* filepath)
 		: m_bytecode{ CreateShaderByteCode(filepath) }
 	{
-		HR(device.CreateVertexShader(m_bytecode.data(), m_bytecode.size(), nullptr, &m_vertexShader));
+		HR(app.getDevice().CreateVertexShader(m_bytecode.data(), m_bytecode.size(), nullptr, &m_vertexShader));
 	}
 }

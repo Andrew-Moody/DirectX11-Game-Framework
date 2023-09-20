@@ -14,7 +14,6 @@ void RunWithImGui(int width, int height)
 {
 	d3d::D3DApp d3dApp{width, height};
 
-
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io{ ImGui::GetIO() };
@@ -92,6 +91,8 @@ void RunWithoutImGui(int width, int height)
 		sumFrameTime += frameTime.deltaTime();
 
 		frames++;
+
+		d3dApp.Update(frameTime.deltaTime());
 	}
 
 	totalTime.tick();
@@ -108,6 +109,8 @@ int main()
 	constexpr int windowHeight{ 600 };
 
 	RunWithoutImGui(windowWidth, windowHeight);
+
+	//RunWithImGui(windowWidth, windowHeight);
 
 	d3dutil::ReportLiveObjects();
 	

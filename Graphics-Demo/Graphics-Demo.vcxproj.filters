@@ -75,6 +75,9 @@
     <ClCompile Include="src\frametime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\d3d\d3dscene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\d3d\winapp.h">
@@ -120,6 +123,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\frametime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\d3d\d3dscene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

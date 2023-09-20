@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cassert>
 #include <string>
+#include <imgui_impl_win32.h>
 
 
 HRESULT WinApp::CreateWindowsApp(int width, int height)
@@ -103,38 +104,46 @@ bool WinApp::CheckMessages()
 	return quit;
 }
 
+LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	//std::cout << "Handling msg: " << msg << '\n';
+	const LRESULT lresult = ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam);
+	if (lresult)
+	{
+		return lresult;
+	}
 
 	switch (msg)
 	{
-
-	/*case WM_LBUTTONDOWN:
-	{
-		STARTUPINFO startupInfo{};
-		GetStartupInfoW(&startupInfo);
-
-		std::wstring messageString = L"nShowCmd: " + std::to_wstring(startupInfo.wShowWindow);
-
-		MessageBox(nullptr, messageString.c_str(), L"Hello", MB_OK);
-		return 0;
-	}*/
-	case WM_KEYDOWN:
-	{
-		if (wParam == VK_ESCAPE)
+		/*case WM_LBUTTONDOWN:
 		{
-			DestroyWindow(hwnd);
-		}
+			STARTUPINFO startupInfo{};
+			GetStartupInfoW(&startupInfo);
 
-		return 0;
-	}
-	case WM_DESTROY:
-	{
-		PostQuitMessage(0);
-		return 0;
-	}
+			std::wstring messageString = L"nShowCmd: " + std::to_wstring(startupInfo.wShowWindow);
+
+			MessageBox(nullptr, messageString.c_str(), L"Hello", MB_OK);
+			return 0;
+		}*/
+		case WM_KEYDOWN:
+		{
+			if (wParam == VK_ESCAPE)
+			{
+				DestroyWindow(hwnd);
+			}
+
+			return 0;
+		}
+		case WM_DESTROY:
+		{
+			PostQuitMessage(0);
+			return 0;
+		}
+		default:
+		{
+			break;
+		}
 
 	}
 

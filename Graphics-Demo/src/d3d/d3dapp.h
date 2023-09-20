@@ -1,35 +1,21 @@
 #pragma once
 
 #include "winapp.h"
+#include "d3dscene.h"
+#include "constantbuffer.h"
 
 #include <d3d11.h>
+#include <wrl/client.h>
+#include <DirectXMath.h>
+
 #include <vector>
 #include <memory>
-#include <wrl/client.h>
-#include <cmath>
 
-#include <DirectxMath.h>
-
-#include "cube.h"
 
 namespace d3d
 {
 	using Microsoft::WRL::ComPtr;
 	using HRESULT = long;
-
-	
-	/*struct Vertex
-	{
-		float x;
-		float y;
-		float z;
-
-		uint8_t r;
-		uint8_t g;
-		uint8_t b;
-		uint8_t a;
-	};*/
-
 
 	class D3DApp
 	{
@@ -47,9 +33,19 @@ namespace d3d
 
 		void ImGuiShutdown();
 
+		// Perhaps the scene should not be owned by the app
+		void LoadScene(const char* path);
+		void Update(float deltaTime);
 		void Draw();
 
 		bool CheckMessages();
+
+		ID3D11Device& getDevice() { return *m_device.Get(); }
+		ID3D11DeviceContext& getContext() { return *m_context.Get(); }
+
+		float getAspect() const noexcept { return m_aspect; }
+
+		D3DScene& getScene() { return m_scene; }
 
 		D3DApp(int width, int height);
 
@@ -105,7 +101,6 @@ namespace d3d
 		const HRESULT m_success{};
 		// Everything declared after this is free to assume the app has been fully constructed
 
-
-		Cube m_cube{};		
+		D3DScene m_scene{};	
 	};
 }

@@ -20,7 +20,7 @@ namespace d3d
 	D3DApp::D3DApp(int width, int height)
 		: m_width{width}, m_height{height},
 		m_success{CreateD3DApp()},
-		m_cube{*m_device.Get(), m_aspect}
+		m_scene{*this, nullptr}
 	{
 		
 	}
@@ -41,8 +41,16 @@ namespace d3d
 
 	void D3DApp::PresentSwapChain()
 	{
-		m_swapChain->Present(1u, 0u);
-		//HR(m_swapChain->Present(1u, 0u)); // Present with vsync
+		// How many vsync updates to wait before presenting each frame
+		// 0u to disable vsync
+		// 1u to enable vsync
+		// Xu to skip frames
+		constexpr UINT syncInterval{ 1u };
+
+		// DXGI_PRESENT flags
+		constexpr UINT flags{ 0u };
+
+		HR(m_swapChain->Present(syncInterval, flags));
 	}
 
 	// Inititialize ImGui implmentation for dx11/win32
@@ -72,9 +80,22 @@ namespace d3d
 		ImGui_ImplWin32_Shutdown();
 	}
 
+
+	void D3DApp::LoadScene(const char* path)
+	{
+		m_scene = D3DScene(*this, path);
+	}
+
+
+	void D3DApp::Update(float deltaTime)
+	{
+		m_scene.update(*this, deltaTime);
+	}
+
+
 	void D3DApp::Draw()
 	{
-		m_cube.draw(*m_context.Get());
+		m_scene.draw(*this);
 	}
 
 
@@ -82,7 +103,7 @@ namespace d3d
 	{
 		return m_window.CheckMessages();
 	}
-	
+
 	
 	HRESULT D3DApp::CreateD3DApp()
 	{

@@ -1,9 +1,9 @@
 #pragma once
-
-#include <d3d11.h>
-#include <wrl.h>
-
 #include "ibindable.h"
+
+#include <wrl/client.h>
+
+struct ID3D11PixelShader;
 
 namespace d3d
 {
@@ -11,9 +11,9 @@ namespace d3d
 	{
 	public:
 
-		void bind(ID3D11DeviceContext& context) override;
+		void bind(D3DApp& app) override;
 
-		PixelShader(ID3D11Device& device, const wchar_t* filepath);
+		PixelShader(D3DApp& app, const wchar_t* filepath);
 
 		PixelShader() = default;
 

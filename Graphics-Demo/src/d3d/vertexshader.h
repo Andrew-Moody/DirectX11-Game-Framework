@@ -1,21 +1,23 @@
 #pragma once
-
-#include <d3d11.h>
-#include <wrl.h>
-
 #include "ibindable.h"
+
+#include <wrl/client.h>
 
 #include <vector>
 
+struct ID3D11VertexShader;
+
 namespace d3d
 {
+	class D3DApp;
+
 	class VertexShader : public IBindable
 	{
 	public:
 
-		void bind(ID3D11DeviceContext& context) override;
+		void bind(D3DApp& app) override;
 
-		VertexShader(ID3D11Device& device, const wchar_t* filepath);
+		VertexShader(D3DApp& app, const wchar_t* filepath);
 
 		VertexShader() = default;
 

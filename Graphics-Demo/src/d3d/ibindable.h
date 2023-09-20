@@ -1,14 +1,14 @@
 #pragma once
 
-#include <d3d11.h>
-
 namespace d3d
 {
+	class D3DApp;
+
 	class IBindable
 	{
 	public:
 
-		virtual void bind(ID3D11DeviceContext& context) = 0;
+		virtual void bind(D3DApp& app) = 0;
 
 		virtual inline ~IBindable() = 0;
 	};

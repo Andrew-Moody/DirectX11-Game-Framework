@@ -1,34 +1,54 @@
 #include "constantbuffer.h"
+#include "d3dapp.h"
 
+#include <d3d11.h>
 #include "d3dutil.h"
 
 namespace d3d
 {
-	void ConstantBuffer::bind(ID3D11DeviceContext& context)
+	template<typename T>
+	void ConstantBuffer<T>::bind(D3DApp& app)
 	{
 		DB_LOG("Binding ConstantBuffer");
 
-		context.VSSetConstantBuffers(0u, 1u, m_buffer.GetAddressOf());
+		app.getContext().VSSetConstantBuffers(0u, 1u, m_buffer.GetAddressOf());
 	}
 
 
-	ConstantBuffer::ConstantBuffer(ID3D11Device& device, const void* data , UINT byteWidth)
+	template<typename T>
+	void ConstantBuffer<T>::setData(D3DApp& app, const T& data)
 	{
-		DB_LOG("Creating ContextBuffer, ByteWidth: " << byteWidth << '\n');
+		D3D11_MAPPED_SUBRESOURCE mappedResource{};
 
-		DB_ASSERT(data);
+		HR(app.getContext().Map(m_buffer.Get(), 0u, D3D11_MAP_WRITE_DISCARD, 0u, &mappedResource));
 
-		m_bufferDesc.ByteWidth = byteWidth;
+		memcpy(mappedResource.pData, &data, sizeof(T));
+
+		app.getContext().Unmap(m_buffer.Get(), 0u);
+	}
+
+
+	template<typename T>
+	ConstantBuffer<T>::ConstantBuffer(D3DApp& app, const T& data)
+	{
+		DB_LOG("Creating ContextBuffer, ByteWidth: " << sizeof(T) << '\n');
+
+		D3D11_BUFFER_DESC m_bufferDesc{};
+		
+		m_bufferDesc.ByteWidth = sizeof(T);
 		m_bufferDesc.StructureByteStride = 0u;
 		m_bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 		m_bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 		m_bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		m_bufferDesc.MiscFlags = 0u;
 
-		m_subresourceData.pSysMem = data;
+		D3D11_SUBRESOURCE_DATA m_subresourceData{};
 
-		HR(device.CreateBuffer(&m_bufferDesc, &m_subresourceData, &m_buffer));
+		m_subresourceData.pSysMem = &data;
 
-		DB_ASSERT(m_buffer.Get());
+		HR(app.getDevice().CreateBuffer(&m_bufferDesc, &m_subresourceData, &m_buffer));
 	}
+
+
+	template class ConstantBuffer<DirectX::XMMATRIX>;
 }
