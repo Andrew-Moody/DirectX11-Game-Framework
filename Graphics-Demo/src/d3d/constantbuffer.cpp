@@ -9,9 +9,9 @@ namespace d3d
 	template<typename T>
 	void ConstantBuffer<T>::bind(D3DApp& app)
 	{
-		DB_LOG("Binding ConstantBuffer");
+		DB_LOG("Binding ConstantBuffer to slot " << m_startSlot);
 
-		app.getContext().VSSetConstantBuffers(0u, 1u, m_buffer.GetAddressOf());
+		app.getContext().VSSetConstantBuffers(m_startSlot, 1u, m_buffer.GetAddressOf());
 	}
 
 
@@ -29,7 +29,8 @@ namespace d3d
 
 
 	template<typename T>
-	ConstantBuffer<T>::ConstantBuffer(D3DApp& app, const T& data)
+	ConstantBuffer<T>::ConstantBuffer(D3DApp& app, UINT startSlot, const T& data)
+		: m_startSlot{ startSlot }
 	{
 		DB_LOG("Creating ContextBuffer, ByteWidth: " << sizeof(T) << '\n');
 

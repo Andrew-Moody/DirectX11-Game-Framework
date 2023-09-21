@@ -1,6 +1,12 @@
-cbuffer CBuff
+cbuffer WorldCBuff : register(b0)
 {
-    matrix transform;
+    matrix worldMat;
+};
+
+
+cbuffer ViewProjCBuff : register(b1)
+{
+    matrix viewProjMat;
 };
 
 
@@ -14,7 +20,8 @@ struct VSOut
 VSOut main(float3 pos : Position, float4 color : Color)
 {
     VSOut vsout;
-    vsout.pos = mul(float4(pos, 1.0f), transform);
+    // matrix * matrix is actually element wise mult not matrix mult
+    vsout.pos = mul(float4(pos, 1.0f), mul(worldMat, viewProjMat));
     vsout.color = color;
 
     return vsout;

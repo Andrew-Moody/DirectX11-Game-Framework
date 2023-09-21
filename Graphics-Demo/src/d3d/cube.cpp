@@ -17,8 +17,7 @@
 namespace d3d
 {
 	Cube::Cube(D3DApp& app)
-		: m_aspect{app.getAspect()},
-		m_vertexShader{ app, m_vsShaderPath},
+		: m_vertexShader{ app, m_vsShaderPath},
 		m_pixelShader{ app, m_pxshaderPath},
 		m_inputLayout{ app, m_inputDescs, m_vertexShader.GetByteCode()},
 		m_vertexBuffer{ app, m_vertices, sizeof(m_vertices), sizeof(Vertex)},
@@ -30,8 +29,7 @@ namespace d3d
 
 	void Cube::draw(D3DApp& app)
 	{
-		const DirectX::XMMATRIX worldMat = getTransform();
-		app.getScene().setWorldMatrix(app, worldMat);
+		app.getScene().setWorldMatrix(app, getTransform());
 
 		m_vertexShader.bind(app);
 
@@ -69,8 +67,7 @@ namespace d3d
 		(
 			DirectX::XMMatrixRotationRollPitchYawFromVector(DirectX::XMLoadFloat3(&m_rotation)) *
 			DirectX::XMMatrixScalingFromVector(DirectX::XMLoadFloat3(&m_scale)) *
-			DirectX::XMMatrixTranslationFromVector(DirectX::XMLoadFloat3(&m_translation)) *
-			DirectX::XMMatrixPerspectiveLH(m_aspect, 1.0f, 2.0f, 100.0f)
+			DirectX::XMMatrixTranslationFromVector(DirectX::XMLoadFloat3(&m_translation))
 		);
 	}
 }

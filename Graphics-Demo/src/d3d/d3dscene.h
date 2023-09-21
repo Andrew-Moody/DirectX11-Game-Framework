@@ -26,14 +26,20 @@ namespace d3d
 
 		void setWorldMatrix(D3DApp& app, const DirectX::XMMATRIX& worldMatrix);
 
+		void setViewProjMatrix(D3DApp& app, const DirectX::XMMATRIX& projectionMatrix);
+
 		D3DScene(D3DApp& app, const char* path);
 
 		D3DScene() = default;
 
 	private:
 
+		std::unique_ptr<IBindable> m_camera{};
+
 		std::vector<std::unique_ptr<IDrawable>> m_drawables{};
 
 		ConstantBuffer<DirectX::XMMATRIX> m_worldMatCBuffer{};
+
+		ConstantBuffer<DirectX::XMMATRIX> m_viewProjMatCBuffer{};
 	};
 }

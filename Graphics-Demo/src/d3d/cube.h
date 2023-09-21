@@ -49,9 +49,6 @@ namespace d3d
 		float m_angleY{DirectX::XMConvertToRadians(-120.0f) };
 		float m_angleZ{DirectX::XMConvertToRadians(0.0f) };
 
-		float m_aspect{ 3.0f / 3.0f };
-
-
 		std::vector<D3D11_INPUT_ELEMENT_DESC> m_inputDescs
 		{
 			{"Position", 0u, DXGI_FORMAT_R32G32B32_FLOAT, 0u, 0u, D3D11_INPUT_PER_VERTEX_DATA, 0u},
@@ -81,7 +78,7 @@ namespace d3d
 			4, 6, 5,	4, 7, 6
 		};
 
-		DirectX::XMFLOAT3 m_translation{ 0.0f, 0.0f, 5.0f };
+		DirectX::XMFLOAT3 m_translation{ 0.0f, 0.0f, 1.5f };
 		DirectX::XMFLOAT3 m_rotation{ m_angleX, m_angleY, m_angleZ };
 		DirectX::XMFLOAT3 m_scale{ 1.0f, 1.0f, 1.0f };
 

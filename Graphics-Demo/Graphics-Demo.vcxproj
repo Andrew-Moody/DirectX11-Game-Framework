@@ -155,6 +155,7 @@
     <ClCompile Include="..\Dependencies\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\Dependencies\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\d3d\bytecode.cpp" />
+    <ClCompile Include="src\d3d\camera.cpp" />
     <ClCompile Include="src\d3d\constantbuffer.cpp" />
     <ClCompile Include="src\d3d\cube.cpp" />
     <ClCompile Include="src\d3d\d3dapp.cpp" />
@@ -171,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\d3d\bytecode.h" />
+    <ClInclude Include="src\d3d\camera.h" />
     <ClInclude Include="src\d3d\constantbuffer.h" />
     <ClInclude Include="src\d3d\cube.h" />
     <ClInclude Include="src\d3d\d3dapp.h" />
