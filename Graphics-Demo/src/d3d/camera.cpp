@@ -52,7 +52,6 @@ namespace d3d
 			XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z) *
 			XMMatrixPerspectiveFovLH(m_fov, m_aspect, m_nearZ, m_farZ)
 		);
-
 	}
 
 
