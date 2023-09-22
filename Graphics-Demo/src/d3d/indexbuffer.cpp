@@ -4,6 +4,8 @@
 
 #include <d3d11.h>
 
+#include <vector>
+
 namespace d3d
 {
 	void IndexBuffer::bind(D3DApp& app)
@@ -14,22 +16,23 @@ namespace d3d
 	}
 
 
-	IndexBuffer::IndexBuffer(D3DApp& app, const UINT16* idxArray, UINT byteWidth)
+	IndexBuffer::IndexBuffer(D3DApp& app, const std::vector<UINT16>& indices)
+		: m_indexCount{ indices.size() }, m_byteWidth{ indices.size() * sizeof(UINT16) }
 	{
-		DB_LOG("Creating IndexBuffer, ByteWidth: " << byteWidth << '\n');
+		DB_LOG("Creating IndexBuffer, IndexCount: " << m_indexCount << ", ByteWidth: " << m_byteWidth << '\n');
 
-		DB_ASSERT(idxArray);
+		D3D11_BUFFER_DESC bufferDesc{};
+		bufferDesc.ByteWidth = m_byteWidth;
+		bufferDesc.StructureByteStride = 0u;
+		bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
+		bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		bufferDesc.CPUAccessFlags = 0u;
+		bufferDesc.MiscFlags = 0u;
 
-		m_bufferDesc.ByteWidth = byteWidth;
-		m_bufferDesc.StructureByteStride = 0u;
-		m_bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
-		m_bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		m_bufferDesc.CPUAccessFlags = 0u;
-		m_bufferDesc.MiscFlags = 0u;
+		D3D11_SUBRESOURCE_DATA subResourceData{};
+		subResourceData.pSysMem = indices.data();
 
-		m_subresourceData.pSysMem = idxArray;
-
-		HR(app.getDevice().CreateBuffer(&m_bufferDesc, &m_subresourceData, &m_buffer));
+		HR(app.getDevice().CreateBuffer(&bufferDesc, &subResourceData, &m_buffer));
 
 		DB_ASSERT(m_buffer.Get());
 	}

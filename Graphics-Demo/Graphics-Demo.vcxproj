@@ -74,12 +74,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <CodeAnalysisRuleSet>..\..\..\..\..\..\dev\LearnCpp\RecommendedPlusCoreGuidlines.ruleset</CodeAnalysisRuleSet>
+    <LibraryPath>C:\Users\Andrew\Documents\Github Desktop\Graphics-Demo\Dependencies\assimp\lib\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <LibraryPath>C:\Users\Andrew\Documents\Github Desktop\Graphics-Demo\Dependencies\assimp\lib\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>C:\Users\Andrew\Documents\Github Desktop\Graphics-Demo\Dependencies\assimp\lib\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -90,14 +93,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>src;../Dependencies/imgui;../Dependencies/imgui/backends</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;../Dependencies/imgui;../Dependencies/imgui/backends;../Dependencies/assimp/include</AdditionalIncludeDirectories>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
+      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;d3dCompiler.lib;dxgi.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3dCompiler.lib;dxgi.lib;dxguid.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -108,14 +112,17 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>src;../Dependencies/imgui;../Dependencies/imgui/backends</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;../Dependencies/imgui;../Dependencies/imgui/backends;../Dependencies/assimp/includes</AdditionalIncludeDirectories>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
+      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;d3dCompiler.lib;dxgi.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3dCompiler.lib;dxgi.lib;dxguid.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -124,10 +131,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>src;../Dependencies/imgui;../Dependencies/imgui/backends;../Dependencies/assimp/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;d3dCompiler.lib;dxgi.lib;dxguid.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -154,6 +163,7 @@
     <ClCompile Include="..\Dependencies\imgui\imgui_draw.cpp" />
     <ClCompile Include="..\Dependencies\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\Dependencies\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\d3d\assetloader.cpp" />
     <ClCompile Include="src\d3d\bytecode.cpp" />
     <ClCompile Include="src\d3d\camera.cpp" />
     <ClCompile Include="src\d3d\constantbuffer.cpp" />
@@ -163,6 +173,8 @@
     <ClCompile Include="src\d3d\d3dutil.cpp" />
     <ClCompile Include="src\d3d\indexbuffer.cpp" />
     <ClCompile Include="src\d3d\inputlayout.cpp" />
+    <ClCompile Include="src\d3d\mesh.cpp" />
+    <ClCompile Include="src\d3d\modeldata.cpp" />
     <ClCompile Include="src\d3d\pixelshader.cpp" />
     <ClCompile Include="src\d3d\vertexbuffer.cpp" />
     <ClCompile Include="src\d3d\vertexshader.cpp" />
@@ -171,6 +183,7 @@
     <ClCompile Include="src\frametime.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\d3d\assetloader.h" />
     <ClInclude Include="src\d3d\bytecode.h" />
     <ClInclude Include="src\d3d\camera.h" />
     <ClInclude Include="src\d3d\constantbuffer.h" />
@@ -182,6 +195,8 @@
     <ClInclude Include="src\d3d\idrawable.h" />
     <ClInclude Include="src\d3d\indexbuffer.h" />
     <ClInclude Include="src\d3d\inputlayout.h" />
+    <ClInclude Include="src\d3d\mesh.h" />
+    <ClInclude Include="src\d3d\modeldata.h" />
     <ClInclude Include="src\d3d\pixelshader.h" />
     <ClInclude Include="src\d3d\vertex.h" />
     <ClInclude Include="src\d3d\vertexbuffer.h" />
@@ -192,6 +207,7 @@
   <ItemGroup>
     <FxCompile Include="src\hlsl\pixelshader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="src\hlsl\vertexshader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>

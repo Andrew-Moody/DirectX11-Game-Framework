@@ -1,4 +1,6 @@
 #include "vertexbuffer.h"
+#include "vertex.h"
+
 #include "d3dapp.h"
 #include "d3dutil.h"
 
@@ -10,28 +12,30 @@ namespace d3d
 	{
 		DB_LOG("Binding VertexBuffer");
 
-		app.getContext().IASetVertexBuffers(0u, 1u, m_buffer.GetAddressOf(), &m_strides, &m_offsets);
+		constexpr UINT stride{ sizeof(Vertex) };
+		constexpr UINT offset{ 0 };
+
+		app.getContext().IASetVertexBuffers(m_slot, 1u, m_buffer.GetAddressOf(), &stride, &offset);
 	}
 
 
-	VertexBuffer::VertexBuffer(D3DApp& app, const void* vxArray, UINT byteWidth, UINT stride)
-		: m_strides{stride}
+	VertexBuffer::VertexBuffer(D3DApp& app, const std::vector<Vertex>& vertices, UINT slot)
+		: m_vertexCount{ vertices.size() }, m_byteWidth{ vertices.size() * sizeof(Vertex) }, m_slot{ slot }
 	{
-		DB_LOG("Creating VertexBuffer, ByteWidth: " << byteWidth << ", Stride: " << stride << '\n');
+		DB_LOG("Creating VertexBuffer, VertexCount: " << m_vertexCount << ", ByteWidth: " << m_byteWidth << ", Stride: " << sizeof(Vertex) << '\n');
 
-		DB_ASSERT(vxArray);
+		D3D11_BUFFER_DESC bufferDesc{};
+		bufferDesc.ByteWidth = m_byteWidth;
+		bufferDesc.StructureByteStride = sizeof(Vertex);
+		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		bufferDesc.CPUAccessFlags = 0u;
+		bufferDesc.MiscFlags = 0u;
 
-		m_bufferDesc.ByteWidth = byteWidth;
-		m_bufferDesc.StructureByteStride = stride;
-		m_bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		m_bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		m_bufferDesc.CPUAccessFlags = 0u;
-		m_bufferDesc.MiscFlags = 0u;
+		D3D11_SUBRESOURCE_DATA subResourceData{};
+		subResourceData.pSysMem = vertices.data();
 
-		m_subresourceData.pSysMem = vxArray;
-
-		// Note existing buffer gets released
-		HR(app.getDevice().CreateBuffer(&m_bufferDesc, &m_subresourceData, &m_buffer));
+		HR(app.getDevice().CreateBuffer(&bufferDesc, &subResourceData, &m_buffer));
 
 		DB_ASSERT(m_buffer.Get());
 	}

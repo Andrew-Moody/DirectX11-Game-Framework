@@ -48,6 +48,8 @@ namespace d3d
 		m_subresourceData.pSysMem = &data;
 
 		HR(app.getDevice().CreateBuffer(&m_bufferDesc, &m_subresourceData, &m_buffer));
+
+		DB_ASSERT(m_buffer.Get());
 	}
 
 

@@ -11,8 +11,6 @@
 #include <wrl/client.h>
 #include <DirectXMath.h>
 
-#include <sstream>
-
 
 namespace d3d
 {
@@ -20,8 +18,8 @@ namespace d3d
 		: m_vertexShader{ app, m_vsShaderPath},
 		m_pixelShader{ app, m_pxshaderPath},
 		m_inputLayout{ app, m_inputDescs, m_vertexShader.GetByteCode()},
-		m_vertexBuffer{ app, m_vertices, sizeof(m_vertices), sizeof(Vertex)},
-		m_indexBuffer{ app, m_indices, sizeof(m_indices)}
+		m_vertexBuffer{ app, m_vertices, 0u},
+		m_indexBuffer{ app, m_indices}
 	{
 		DB_LOG("Constructing Cube");
 	}
@@ -43,7 +41,7 @@ namespace d3d
 
 		m_indexBuffer.bind(app);
 
-		app.getContext().DrawIndexed(std::size(m_indices), 0u, 0);
+		//app.getContext().DrawIndexed(m_indices.size(), 0u, 0);
 	}
 
 

@@ -1,14 +1,17 @@
 #pragma once
 #include "ibindable.h"
 
-#include <d3d11.h>
+//#include <d3d11.h>
 #include <wrl/client.h>
+
+#include <vector>
 
 struct ID3D11Buffer;
 
 namespace d3d
 {
 	class D3DApp;
+	struct Vertex;
 	
 	class VertexBuffer : public IBindable
 	{
@@ -16,7 +19,9 @@ namespace d3d
 
 		void bind(D3DApp& app) override;
 
-		VertexBuffer(D3DApp& app, const void* vxArray, UINT byteWidth, UINT stride);
+		size_t getVertexCount() const { return m_vertexCount; }
+
+		VertexBuffer(D3DApp&, const std::vector<Vertex>& vertices, UINT slot);
 
 		VertexBuffer() = default;
 
@@ -24,12 +29,12 @@ namespace d3d
 
 	private:
 
-		D3D11_BUFFER_DESC m_bufferDesc{};
-		D3D11_SUBRESOURCE_DATA m_subresourceData{};
+		const UINT m_slot{};
+
+		size_t m_vertexCount{};
+
+		size_t m_byteWidth{};
+
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_buffer;
-
-		const UINT m_strides{};
-
-		const UINT m_offsets{};
 	};
 }

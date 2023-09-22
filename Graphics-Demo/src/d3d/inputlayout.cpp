@@ -17,7 +17,7 @@ namespace d3d
 	{
 		DB_LOG("Creating InputLayout, inputDescs size: " << inputDescs.size() << ", bytcode size: " << bytecode.size() << '\n');
 
-		HR(app.getDevice().CreateInputLayout(inputDescs.data(), inputDescs.size(), bytecode.data(), bytecode.size(), &m_inputLayout));
+		HR(app.getDevice().CreateInputLayout(inputDescs.data(), static_cast<UINT>(inputDescs.size()), bytecode.data(), bytecode.size(), &m_inputLayout));
 
 		assert(m_inputLayout.Get());
 	}

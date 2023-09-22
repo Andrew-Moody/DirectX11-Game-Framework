@@ -1,7 +1,9 @@
 #pragma once
 #include "ibindable.h"
-#include <d3d11.h>
+
 #include <wrl/client.h>
+
+#include <vector>
 
 struct ID3D11Buffer;
 
@@ -15,7 +17,9 @@ namespace d3d
 
 		void bind(D3DApp& app) override;
 
-		IndexBuffer(D3DApp& app, const UINT16* idxArray, UINT byteWidth);
+		size_t getIndexCount() const { return m_indexCount; }
+
+		IndexBuffer(D3DApp& app, const std::vector<UINT16>& indices);
 
 		IndexBuffer() = default;
 
@@ -23,8 +27,9 @@ namespace d3d
 
 	private:
 
-		D3D11_BUFFER_DESC m_bufferDesc{};
-		D3D11_SUBRESOURCE_DATA m_subresourceData{};
+		size_t m_indexCount{};
+		size_t m_byteWidth{};
+
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_buffer;
 	};
 }

@@ -3,6 +3,9 @@
 #include "idrawable.h"
 #include "camera.h"
 #include "cube.h"
+#include "assetloader.h"
+#include "modeldata.h"
+#include "mesh.h"
 
 #include <DirectXMath.h>
 
@@ -23,7 +26,14 @@ namespace d3d
 
 		m_camera = std::make_unique<Camera>(Camera(app));
 
-		m_drawables.push_back(std::make_unique<Cube>(Cube(app)));		
+		m_drawables.push_back(std::make_unique<Cube>(Cube(app)));
+
+
+		AssetLoader assetLoader;
+
+		ModelData model = assetLoader.loadModel("C:/Users/Andrew/Documents/GameProject/FBX/Axe.fbx");
+
+		m_drawables.push_back(std::make_unique<Mesh>(model.getMesh(app, 0)));
 	}
 
 
