@@ -22,7 +22,7 @@ namespace d3d
 		DB_LOG("Creating IndexBuffer, IndexCount: " << m_indexCount << ", ByteWidth: " << m_byteWidth << '\n');
 
 		D3D11_BUFFER_DESC bufferDesc{};
-		bufferDesc.ByteWidth = m_byteWidth;
+		bufferDesc.ByteWidth = static_cast<UINT>(m_byteWidth);
 		bufferDesc.StructureByteStride = 0u;
 		bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
 		bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;

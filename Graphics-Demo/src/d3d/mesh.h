@@ -3,6 +3,7 @@
 #include "idrawable.h"
 #include "vertexbuffer.h"
 #include "indexbuffer.h"
+#include "vertex.h"
 
 #include <vector>
 
@@ -18,11 +19,16 @@ namespace d3d
 
 		void update(D3DApp& app, float deltaTime) override;
 
-		Mesh(D3DApp& app, std::vector<Vertex> vertices, std::vector<UINT16> indices);
+		Mesh(D3DApp& app, const std::vector<Vertex>& vertices, const std::vector<uint16_t>& indices);
 
 		Mesh() = default;
 
+		~Mesh() override = default;
+
 	private:
+
+		std::vector<Vertex> m_vertices{};
+		std::vector<uint16_t> m_indices{};
 
 		VertexBuffer m_vertexBuffer{};
 		IndexBuffer m_indexBuffer{};

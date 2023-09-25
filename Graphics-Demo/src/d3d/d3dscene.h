@@ -3,6 +3,7 @@
 
 #include "constantbuffer.h"
 
+#include <string>
 #include <vector>
 #include <memory>
 
@@ -28,7 +29,7 @@ namespace d3d
 
 		void setViewProjMatrix(D3DApp& app, const DirectX::XMMATRIX& projectionMatrix);
 
-		D3DScene(D3DApp& app, const char* path);
+		D3DScene(D3DApp& app, const std::string& path);
 
 		D3DScene() = default;
 
@@ -36,7 +37,9 @@ namespace d3d
 
 		std::unique_ptr<IBindable> m_camera{};
 
-		std::vector<std::unique_ptr<IDrawable>> m_drawables{};
+		std::vector<std::unique_ptr<IDrawable>> m_ownedDrawables{};
+
+		std::vector<IDrawable*> m_drawables{};
 
 		ConstantBuffer<DirectX::XMMATRIX> m_worldMatCBuffer{};
 

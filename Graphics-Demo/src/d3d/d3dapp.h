@@ -1,8 +1,8 @@
 #pragma once
 
 #include "winapp.h"
+#include "resourcemanager.h"
 #include "d3dscene.h"
-#include "constantbuffer.h"
 
 #include <d3d11.h>
 #include <wrl/client.h>
@@ -46,6 +46,8 @@ namespace d3d
 		float getAspect() const noexcept { return m_aspect; }
 
 		D3DScene& getScene() { return m_scene; }
+
+		ResourceManager& getResourceManager() { return m_resourceManager; }
 
 		D3DApp(int width, int height);
 
@@ -100,6 +102,8 @@ namespace d3d
 		// Everything declared before this will be default constructed before CreateD3DApp is called
 		const HRESULT m_success{};
 		// Everything declared after this is free to assume the app has been fully constructed
+
+		ResourceManager m_resourceManager{};
 
 		D3DScene m_scene{};	
 	};

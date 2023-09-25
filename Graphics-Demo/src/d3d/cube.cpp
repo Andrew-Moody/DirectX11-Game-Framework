@@ -1,47 +1,34 @@
 #include "cube.h"
 #include "idrawable.h"
 #include "ibindable.h"
-#include "vertexbuffer.h"
-#include "indexbuffer.h"
-#include "constantbuffer.h"
+
+#include "material.h"
+#include "meshprimitives.h"
+
 #include "d3dapp.h"
 #include "d3dutil.h"
-
-#include <d3d11.h>
-#include <wrl/client.h>
-#include <DirectXMath.h>
 
 
 namespace d3d
 {
-	Cube::Cube(D3DApp& app)
-		: m_vertexShader{ app, m_vsShaderPath},
-		m_pixelShader{ app, m_pxshaderPath},
-		m_inputLayout{ app, m_inputDescs, m_vertexShader.GetByteCode()},
-		m_vertexBuffer{ app, m_vertices, 0u},
-		m_indexBuffer{ app, m_indices}
+	Cube::Cube(D3DApp& app, Material* material)
+		: m_transform{ {0.0f, 0.0f, 1.5f} },
+		m_mesh{ app, MeshPrimitives::getCubeVertices(), MeshPrimitives::getCubeIndices() },
+		m_material{ material }
 	{
 		DB_LOG("Constructing Cube");
+
+		m_transform.rotate(0.0f, -10.0f, 0.0f);
 	}
 
 
 	void Cube::draw(D3DApp& app)
 	{
-		app.getScene().setWorldMatrix(app, getTransform());
+		app.getScene().setWorldMatrix(app, m_transform.getTransformMatrix());
 
-		m_vertexShader.bind(app);
+		m_material->bind(app);
 
-		m_pixelShader.bind(app);
-
-		m_inputLayout.bind(app);
-
-		app.getContext().IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-		m_vertexBuffer.bind(app);
-
-		m_indexBuffer.bind(app);
-
-		//app.getContext().DrawIndexed(m_indices.size(), 0u, 0);
+		//m_mesh.draw(app);
 	}
 
 
@@ -49,23 +36,10 @@ namespace d3d
 	{
 		const float deltaSeconds = 0.001f * deltaTime;
 
-		constexpr float xSpeed = 0.2f;
-		constexpr float ySpeed = 0.5f;
-		constexpr float zSpeed = 0.1f;
+		const float xRot = 0.0f * deltaSeconds;
+		const float yRot = 15.0f * deltaSeconds;
+		const float zRot = 0.0f * deltaSeconds;
 
-		m_rotation.x += deltaSeconds * xSpeed;
-		m_rotation.y += deltaSeconds * ySpeed;
-		m_rotation.z += deltaSeconds * zSpeed;
-	}
-
-
-	DirectX::XMMATRIX Cube::getTransform()
-	{
-		return DirectX::XMMatrixTranspose
-		(
-			DirectX::XMMatrixRotationRollPitchYawFromVector(DirectX::XMLoadFloat3(&m_rotation)) *
-			DirectX::XMMatrixScalingFromVector(DirectX::XMLoadFloat3(&m_scale)) *
-			DirectX::XMMatrixTranslationFromVector(DirectX::XMLoadFloat3(&m_translation))
-		);
+		m_transform.rotate(xRot, yRot, zRot);
 	}
 }

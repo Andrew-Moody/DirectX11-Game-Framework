@@ -10,6 +10,7 @@ struct ID3D11VertexShader;
 namespace d3d
 {
 	class D3DApp;
+	class InputLayout;
 
 	class VertexShader : public IBindable
 	{
@@ -17,15 +18,14 @@ namespace d3d
 
 		void bind(D3DApp& app) override;
 
-		VertexShader(D3DApp& app, const wchar_t* filepath);
+		VertexShader(D3DApp& app, const std::vector<uint8_t>& byteCode);
 
 		VertexShader() = default;
 
-		const std::vector<char>& GetByteCode() const noexcept { return m_bytecode; }
-
 	private:
 
-		std::vector<char> m_bytecode{};
+		InputLayout* m_inputLayout{};
+
 		Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader{};
 	};
 }

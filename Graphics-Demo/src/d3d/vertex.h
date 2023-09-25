@@ -10,9 +10,7 @@ namespace d3d
 		float y;
 		float z;
 
-		UINT8 r;
-		UINT8 g;
-		UINT8 b;
-		UINT8 a;
+		float u;
+		float v;
 	};
 }

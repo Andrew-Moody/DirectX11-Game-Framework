@@ -8,11 +8,13 @@ namespace d3d
 {
 	void Mesh::draw(D3DApp& app)
 	{
+		app.getContext().IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
 		m_vertexBuffer.bind(app);
 
 		m_indexBuffer.bind(app);
 
-		app.getContext().DrawIndexed(m_indexBuffer.getIndexCount(), 0u, 0u);
+		app.getContext().DrawIndexed(static_cast<UINT>(m_indexBuffer.getIndexCount()), 0u, 0u);
 	}
 
 
@@ -22,8 +24,8 @@ namespace d3d
 	}
 
 
-	Mesh::Mesh(D3DApp& app, std::vector<Vertex> vertices, std::vector<UINT16> indices)
-		: m_vertexBuffer(app, vertices, 0u), m_indexBuffer(app, indices)
+	Mesh::Mesh(D3DApp& app, const std::vector<Vertex>& vertices, const std::vector<uint16_t>& indices)
+		: m_vertices{vertices}, m_indices{indices}, m_vertexBuffer(app, vertices, 0u), m_indexBuffer(app, indices)
 	{
 
 	}

@@ -3,18 +3,19 @@
 #include "d3dutil.h"
 
 #include <fstream>
+#include <string>
 
 namespace d3d
 {
-	std::vector<char> CreateShaderByteCode(const wchar_t* path)
+	std::vector<uint8_t> CreateShaderByteCode(const std::string& path)
 	{
-		std::vector<char> byteCode{};
+		std::vector<uint8_t> byteCode{};
 
 		std::ifstream fileStream(path, std::ios::in | std::ios::binary | std::ios::ate);
 
 		if (!fileStream)
 		{
-			d3dutil::Output("Failed to open shader file");
+			DB_LOG("Failed to open shader file" << '\n' << path);
 			return byteCode;
 		}
 
@@ -32,7 +33,7 @@ namespace d3d
 
 		fileStream.seekg(0, std::ios::beg);
 
-		fileStream.read(byteCode.data(), size);
+		fileStream.read(reinterpret_cast<char*>(byteCode.data()), size);
 
 		fileStream.close();
 

@@ -1,6 +1,7 @@
 #include "assetloader.h"
 
 #include "modeldata.h"
+#include "texturedata.h"
 #include "d3dutil.h"
 
 #include <assimp/Importer.hpp>
@@ -8,7 +9,12 @@
 #include <assimp/scene.h>
 
 #include <string>
+#include <vector>
+#include <memory>
+#include <iostream>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 
 namespace d3d
 {
@@ -27,5 +33,15 @@ namespace d3d
 		}
 
 		return ModelData{ scene };
+	}
+
+
+	TextureData AssetLoader::loadTexture(const std::string& filePath)
+	{
+		TextureData texData{};
+
+		texData.data.reset(stbi_load(filePath.c_str(), &texData.width, &texData.height, &texData.channels, 4));
+
+		return texData;
 	}
 }

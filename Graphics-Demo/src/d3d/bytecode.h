@@ -1,8 +1,10 @@
 #pragma once
 
 #include <vector>
+#include <string>
+
 
 namespace d3d
 {
-	std::vector<char> CreateShaderByteCode(const wchar_t* path);
+	std::vector<uint8_t> CreateShaderByteCode(const std::string& path);
 }

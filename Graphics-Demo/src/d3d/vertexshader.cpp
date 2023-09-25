@@ -1,8 +1,8 @@
 #include "vertexshader.h"
 #include "d3dapp.h"
-#include "bytecode.h"
-
 #include "d3dutil.h"
+
+#include <vector>
 
 namespace d3d
 {
@@ -14,9 +14,8 @@ namespace d3d
 	}
 
 
-	VertexShader::VertexShader(D3DApp& app, const wchar_t* filepath)
-		: m_bytecode{ CreateShaderByteCode(filepath) }
+	VertexShader::VertexShader(D3DApp& app, const std::vector<uint8_t>& byteCode)
 	{
-		HR(app.getDevice().CreateVertexShader(m_bytecode.data(), m_bytecode.size(), nullptr, &m_vertexShader));
+		HR(app.getDevice().CreateVertexShader(byteCode.data(), byteCode.size(), nullptr, &m_vertexShader));
 	}
 }

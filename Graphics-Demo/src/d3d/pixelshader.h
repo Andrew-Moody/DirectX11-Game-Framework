@@ -3,6 +3,8 @@
 
 #include <wrl/client.h>
 
+#include <vector>
+
 struct ID3D11PixelShader;
 
 namespace d3d
@@ -13,7 +15,7 @@ namespace d3d
 
 		void bind(D3DApp& app) override;
 
-		PixelShader(D3DApp& app, const wchar_t* filepath);
+		PixelShader(D3DApp& app, const std::vector<uint8_t>& byteCode);
 
 		PixelShader() = default;
 

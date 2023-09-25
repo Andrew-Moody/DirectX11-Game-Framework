@@ -25,7 +25,7 @@ namespace d3d
 		DB_LOG("Creating VertexBuffer, VertexCount: " << m_vertexCount << ", ByteWidth: " << m_byteWidth << ", Stride: " << sizeof(Vertex) << '\n');
 
 		D3D11_BUFFER_DESC bufferDesc{};
-		bufferDesc.ByteWidth = m_byteWidth;
+		bufferDesc.ByteWidth = static_cast<UINT>(m_byteWidth);
 		bufferDesc.StructureByteStride = sizeof(Vertex);
 		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 		bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;

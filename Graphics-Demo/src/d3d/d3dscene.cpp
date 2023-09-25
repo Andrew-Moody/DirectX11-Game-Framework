@@ -7,8 +7,15 @@
 #include "modeldata.h"
 #include "mesh.h"
 
+#include "bytecode.h"
+#include "inputlayout.h"
+#include "vertexshader.h"
+#include "pixelshader.h"
+#include "material.h"
+
 #include <DirectXMath.h>
 
+#include <string>
 #include <vector>
 #include <memory>
 
@@ -16,7 +23,7 @@ namespace d3d
 {
 	using namespace DirectX;
 
-	D3DScene::D3DScene(D3DApp& app, const char* path)
+	D3DScene::D3DScene(D3DApp& app, const std::string& path)
 		: m_worldMatCBuffer{ app, 0u, DirectX::XMMatrixIdentity() },
 		m_viewProjMatCBuffer{ app, 1u, DirectX::XMMatrixIdentity() }
 	{
@@ -26,14 +33,15 @@ namespace d3d
 
 		m_camera = std::make_unique<Camera>(Camera(app));
 
-		m_drawables.push_back(std::make_unique<Cube>(Cube(app)));
+		app.getResourceManager().loadScene(app, path);
 
+		Material* material = app.getResourceManager().getMaterial();
 
-		AssetLoader assetLoader;
+		m_ownedDrawables.push_back(std::make_unique<Cube>(Cube(app, material)));
 
-		ModelData model = assetLoader.loadModel("C:/Users/Andrew/Documents/GameProject/FBX/Axe.fbx");
+		Mesh* mesh = app.getResourceManager().getMesh();
 
-		m_drawables.push_back(std::make_unique<Mesh>(model.getMesh(app, 0)));
+		m_drawables.push_back(mesh);
 	}
 
 
@@ -41,9 +49,23 @@ namespace d3d
 	{
 		m_camera->bind(app);
 
-		for (auto iter = m_drawables.begin(); iter != m_drawables.end(); ++iter)
+		app.getResourceManager().getInputLayout()->bind(app);
+
+		app.getResourceManager().getMaterial()->bind(app);
+
+		app.getResourceManager().getSamplerState()->bind(app);
+
+		app.getResourceManager().getTexture()->bind(app);
+
+
+		for (auto iter = m_ownedDrawables.begin(); iter != m_ownedDrawables.end(); ++iter)
 		{
 			(*iter)->draw(app);
+		}
+
+		for (auto drawable : m_drawables)
+		{
+			drawable->draw(app);
 		}
 	}
 
@@ -52,7 +74,7 @@ namespace d3d
 	{
 		dynamic_cast<Camera*>(m_camera.get())->update(app, deltaTime);
 
-		for (auto iter = m_drawables.begin(); iter != m_drawables.end(); ++iter)
+		for (auto iter = m_ownedDrawables.begin(); iter != m_ownedDrawables.end(); ++iter)
 		{
 			(*iter)->update(app, deltaTime);
 		}

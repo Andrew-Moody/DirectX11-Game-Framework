@@ -93,7 +93,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>src;../Dependencies/imgui;../Dependencies/imgui/backends;../Dependencies/assimp/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;../Dependencies/imgui;../Dependencies/imgui/backends;../Dependencies/assimp/include;../Dependencies/stb</AdditionalIncludeDirectories>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
       <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
@@ -112,7 +112,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>src;../Dependencies/imgui;../Dependencies/imgui/backends;../Dependencies/assimp/includes</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;../Dependencies/imgui;../Dependencies/imgui/backends;../Dependencies/assimp/includes;../Dependencies/stb</AdditionalIncludeDirectories>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
       <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
@@ -131,7 +131,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>src;../Dependencies/imgui;../Dependencies/imgui/backends;../Dependencies/assimp/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;../Dependencies/imgui;../Dependencies/imgui/backends;../Dependencies/assimp/include;../Dependencies/stb</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -171,11 +171,17 @@
     <ClCompile Include="src\d3d\d3dapp.cpp" />
     <ClCompile Include="src\d3d\d3dscene.cpp" />
     <ClCompile Include="src\d3d\d3dutil.cpp" />
+    <ClCompile Include="src\d3d\gameobject.cpp" />
     <ClCompile Include="src\d3d\indexbuffer.cpp" />
     <ClCompile Include="src\d3d\inputlayout.cpp" />
+    <ClCompile Include="src\d3d\material.cpp" />
     <ClCompile Include="src\d3d\mesh.cpp" />
     <ClCompile Include="src\d3d\modeldata.cpp" />
     <ClCompile Include="src\d3d\pixelshader.cpp" />
+    <ClCompile Include="src\d3d\resourcemanager.cpp" />
+    <ClCompile Include="src\d3d\texture.cpp" />
+    <ClCompile Include="src\d3d\samplerstate.cpp" />
+    <ClCompile Include="src\d3d\transform.cpp" />
     <ClCompile Include="src\d3d\vertexbuffer.cpp" />
     <ClCompile Include="src\d3d\vertexshader.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -191,13 +197,21 @@
     <ClInclude Include="src\d3d\d3dapp.h" />
     <ClInclude Include="src\d3d\d3dscene.h" />
     <ClInclude Include="src\d3d\d3dutil.h" />
+    <ClInclude Include="src\d3d\gameobject.h" />
     <ClInclude Include="src\d3d\ibindable.h" />
     <ClInclude Include="src\d3d\idrawable.h" />
     <ClInclude Include="src\d3d\indexbuffer.h" />
     <ClInclude Include="src\d3d\inputlayout.h" />
+    <ClInclude Include="src\d3d\material.h" />
     <ClInclude Include="src\d3d\mesh.h" />
+    <ClInclude Include="src\d3d\meshprimitives.h" />
     <ClInclude Include="src\d3d\modeldata.h" />
     <ClInclude Include="src\d3d\pixelshader.h" />
+    <ClInclude Include="src\d3d\resourcemanager.h" />
+    <ClInclude Include="src\d3d\texture.h" />
+    <ClInclude Include="src\d3d\texturedata.h" />
+    <ClInclude Include="src\d3d\samplerstate.h" />
+    <ClInclude Include="src\d3d\transform.h" />
     <ClInclude Include="src\d3d\vertex.h" />
     <ClInclude Include="src\d3d\vertexbuffer.h" />
     <ClInclude Include="src\d3d\vertexshader.h" />
@@ -211,7 +225,11 @@
     </FxCompile>
     <FxCompile Include="src\hlsl\vertexshader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\d3d\scene.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

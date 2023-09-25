@@ -19,7 +19,7 @@ namespace d3d
 
 		void bind(D3DApp& app) override;
 
-		InputLayout(D3DApp& app, const std::vector<D3D11_INPUT_ELEMENT_DESC>& inputDescs, const std::vector<char>& bytecode);
+		InputLayout(D3DApp& app, const std::vector<D3D11_INPUT_ELEMENT_DESC>& inputDescs, const std::vector<uint8_t>& bytecode);
 
 		InputLayout() = default;
 

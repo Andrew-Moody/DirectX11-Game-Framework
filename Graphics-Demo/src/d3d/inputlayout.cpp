@@ -13,9 +13,9 @@ namespace d3d
 		app.getContext().IASetInputLayout(m_inputLayout.Get());
 	}
 
-	InputLayout::InputLayout(D3DApp& app, const vector<D3D11_INPUT_ELEMENT_DESC>& inputDescs, const vector<char>& bytecode)
+	InputLayout::InputLayout(D3DApp& app, const vector<D3D11_INPUT_ELEMENT_DESC>& inputDescs, const vector<uint8_t>& bytecode)
 	{
-		DB_LOG("Creating InputLayout, inputDescs size: " << inputDescs.size() << ", bytcode size: " << bytecode.size() << '\n');
+		DB_LOG("Creating InputLayout, inputDescs size: " << inputDescs.size() << ", bytecode size: " << bytecode.size() << '\n');
 
 		HR(app.getDevice().CreateInputLayout(inputDescs.data(), static_cast<UINT>(inputDescs.size()), bytecode.data(), bytecode.size(), &m_inputLayout));
 

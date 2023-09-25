@@ -55,7 +55,9 @@ namespace d3d
 		{
 			aiVector3D vertex = mesh->mVertices[i];
 
-			vertices.push_back({ vertex.x, vertex.y, vertex.z, 255u, 0u, 255u, 255u});
+			aiVector3D texCoords = mesh->mTextureCoords[0][i];
+
+			vertices.push_back({ vertex.x, vertex.y, vertex.z, texCoords.x, texCoords.y});
 		}
 
 		std::vector<UINT16>& indices{ m_meshData.back().Indices};

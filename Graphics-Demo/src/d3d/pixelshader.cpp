@@ -1,7 +1,7 @@
 #include "pixelshader.h"
 #include "d3dapp.h"
-#include "bytecode.h"
 #include "d3dutil.h"
+
 #include <vector>
 
 
@@ -15,10 +15,8 @@ namespace d3d
 	}
 
 
-	PixelShader::PixelShader(D3DApp& app, const wchar_t* filepath)
+	PixelShader::PixelShader(D3DApp& app, const std::vector<uint8_t>& byteCode)
 	{
-		std::vector<char> bytecode = CreateShaderByteCode(filepath);
-
-		HR(app.getDevice().CreatePixelShader(bytecode.data(), bytecode.size(), nullptr, &m_pixelShader));
+		HR(app.getDevice().CreatePixelShader(byteCode.data(), byteCode.size(), nullptr, &m_pixelShader));
 	}
 }
