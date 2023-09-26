@@ -31,7 +31,7 @@ namespace d3d
 		float m_farZ{ 100.0f };
 
 
-		DirectX::XMFLOAT3 m_position{0.0f, 0.0f, 0.0f};
+		DirectX::XMFLOAT3 m_position{0.0f, 0.0f, 1.5f};
 		DirectX::XMFLOAT3 m_rotation{0.0f, 0.0f, 0.0f};
 
 		DirectX::XMFLOAT4X4 m_viewMatrix{};

@@ -3,6 +3,7 @@
 #include "idrawable.h"
 #include "camera.h"
 #include "cube.h"
+#include "gameobject.h"
 #include "assetloader.h"
 #include "modeldata.h"
 #include "mesh.h"
@@ -31,17 +32,22 @@ namespace d3d
 
 		m_viewProjMatCBuffer.bind(app);
 
-		m_camera = std::make_unique<Camera>(Camera(app));
+		m_camera = std::make_unique<Camera>(app);
 
 		app.getResourceManager().loadScene(app, path);
 
+		Mesh* cubeMesh = app.getResourceManager().getCubeMesh();
+
 		Material* material = app.getResourceManager().getMaterial();
 
-		m_ownedDrawables.push_back(std::make_unique<Cube>(Cube(app, material)));
+
+		//m_drawables.push_back
+
+		m_drawables.push_back(std::make_unique<GameObject>(app, cubeMesh, material));
 
 		Mesh* mesh = app.getResourceManager().getMesh();
 
-		m_drawables.push_back(mesh);
+		m_drawables.push_back(std::make_unique<GameObject>(app, mesh, material));
 	}
 
 
@@ -58,12 +64,7 @@ namespace d3d
 		app.getResourceManager().getTexture()->bind(app);
 
 
-		for (auto iter = m_ownedDrawables.begin(); iter != m_ownedDrawables.end(); ++iter)
-		{
-			(*iter)->draw(app);
-		}
-
-		for (auto drawable : m_drawables)
+		for (auto& drawable : m_drawables)
 		{
 			drawable->draw(app);
 		}
@@ -74,9 +75,9 @@ namespace d3d
 	{
 		dynamic_cast<Camera*>(m_camera.get())->update(app, deltaTime);
 
-		for (auto iter = m_ownedDrawables.begin(); iter != m_ownedDrawables.end(); ++iter)
+		for (auto& drawable : m_drawables)
 		{
-			(*iter)->update(app, deltaTime);
+			drawable->update(app, deltaTime);
 		}
 	}
 

@@ -2,8 +2,9 @@
 #include "idrawable.h"
 #include "ibindable.h"
 
+#include "transform.h"
+#include "mesh.h"
 #include "material.h"
-#include "meshprimitives.h"
 
 #include "d3dapp.h"
 #include "d3dutil.h"
@@ -11,9 +12,9 @@
 
 namespace d3d
 {
-	Cube::Cube(D3DApp& app, Material* material)
-		: m_transform{ {0.0f, 0.0f, 1.5f} },
-		m_mesh{ app, MeshPrimitives::getCubeVertices(), MeshPrimitives::getCubeIndices() },
+	Cube::Cube(D3DApp& app, Mesh* mesh, Material* material)
+		: m_transform{ {0.0f, 0.0f, 0.0f} },
+		m_mesh{ mesh },
 		m_material{ material }
 	{
 		DB_LOG("Constructing Cube");
@@ -28,7 +29,7 @@ namespace d3d
 
 		m_material->bind(app);
 
-		//m_mesh.draw(app);
+		m_mesh->draw(app);
 	}
 
 

@@ -3,12 +3,12 @@
 #include "ibindable.h"
 
 #include "transform.h"
-#include "mesh.h"
 
 
 namespace d3d
 {
 	class D3DApp;
+	class Mesh;
 	class Material;
 
 	class Cube : public IDrawable
@@ -19,17 +19,17 @@ namespace d3d
 
 		void update(D3DApp& app, float deltaTime);
 
-		Cube(D3DApp& app, Material* material);
+		Cube(D3DApp& app, Mesh* mesh, Material* material);
 
 		Cube() = default;
 
-		~Cube() override = default;
+		//~Cube() override = default;
 
 	private:
 
 		Transform m_transform{};
 		
-		Mesh m_mesh{};
+		Mesh* m_mesh{};
 
 		IBindable* m_material{};
 	};

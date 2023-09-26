@@ -166,6 +166,7 @@
     <ClCompile Include="src\d3d\assetloader.cpp" />
     <ClCompile Include="src\d3d\bytecode.cpp" />
     <ClCompile Include="src\d3d\camera.cpp" />
+    <ClCompile Include="src\d3d\component.cpp" />
     <ClCompile Include="src\d3d\constantbuffer.cpp" />
     <ClCompile Include="src\d3d\cube.cpp" />
     <ClCompile Include="src\d3d\d3dapp.cpp" />
@@ -176,6 +177,7 @@
     <ClCompile Include="src\d3d\inputlayout.cpp" />
     <ClCompile Include="src\d3d\material.cpp" />
     <ClCompile Include="src\d3d\mesh.cpp" />
+    <ClCompile Include="src\d3d\meshprimitives.cpp" />
     <ClCompile Include="src\d3d\modeldata.cpp" />
     <ClCompile Include="src\d3d\pixelshader.cpp" />
     <ClCompile Include="src\d3d\resourcemanager.cpp" />
@@ -192,6 +194,8 @@
     <ClInclude Include="src\d3d\assetloader.h" />
     <ClInclude Include="src\d3d\bytecode.h" />
     <ClInclude Include="src\d3d\camera.h" />
+    <ClInclude Include="src\d3d\component.h" />
+    <ClInclude Include="src\d3d\components\spin.h" />
     <ClInclude Include="src\d3d\constantbuffer.h" />
     <ClInclude Include="src\d3d\cube.h" />
     <ClInclude Include="src\d3d\d3dapp.h" />

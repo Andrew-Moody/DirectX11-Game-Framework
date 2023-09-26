@@ -38,6 +38,12 @@ namespace d3d
 
 		Transform() = default;
 
+		~Transform() = default;
+
+		//Transform(const Transform& transform) = delete;
+
+		Transform(Transform&& transform) noexcept = default;
+
 	private:
 
 		TransformData m_transformData{};

@@ -8,8 +8,9 @@
 #include "vertexshader.h"
 #include "pixelshader.h"
 #include "material.h"
-#include "d3dutil.h"
 
+#include "meshprimitives.h"
+#include "d3dutil.h"
 #include <d3d11.h>
 
 #include <fstream>
@@ -62,13 +63,13 @@ namespace d3d
 			//{"Color", 0u, DXGI_FORMAT_R8G8B8A8_UNORM, 0u, 20u, D3D11_INPUT_PER_VERTEX_DATA, 0u}
 			};
 
-			m_inputLayout = std::make_unique<InputLayout>(InputLayout(app, elementDesc, vsByteCode));
+			m_inputLayout = std::make_unique<InputLayout>(app, elementDesc, vsByteCode);
 
-			m_vertexShader = std::make_unique<VertexShader>(VertexShader(app, vsByteCode));
+			m_vertexShader = std::make_unique<VertexShader>(app, vsByteCode);
 
-			m_pixelShader = std::make_unique<PixelShader>(PixelShader(app, psByteCode));
+			m_pixelShader = std::make_unique<PixelShader>(app, psByteCode);
 
-			m_material = std::make_unique<Material>(Material(m_vertexShader.get(), m_pixelShader.get()));
+			m_material = std::make_unique<Material>(m_vertexShader.get(), m_pixelShader.get());
 
 
 			std::string texturePath;
@@ -79,9 +80,9 @@ namespace d3d
 
 			TextureData texData = m_assetLoader.loadTexture(texturePath);
 
-			m_texture = std::make_unique<Texture>(Texture(app, texData));
+			m_texture = std::make_unique<Texture>(app, texData);
 
-			m_samplerState = std::make_unique<SamplerState>(SamplerState(app));
+			m_samplerState = std::make_unique<SamplerState>(app);
 		}
 
 
@@ -104,5 +105,7 @@ namespace d3d
 				m_meshes[modelPath] = std::make_unique<Mesh>(modelData.getMesh(app, 0u));
 			}*/
 		}
+
+		m_cubeMesh = std::make_unique<Mesh>(app, MeshPrimitives::getCubeVertices(), MeshPrimitives::getCubeIndices());
 	}
 }

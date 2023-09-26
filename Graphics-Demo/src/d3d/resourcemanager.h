@@ -32,6 +32,8 @@ namespace d3d
 
 		Mesh* getMesh() { return m_mesh.get(); }
 
+		Mesh* getCubeMesh() { return m_cubeMesh.get(); }
+
 		Texture* getTexture() { return m_texture.get(); }
 
 		SamplerState* getSamplerState() { return m_samplerState.get(); }
@@ -48,6 +50,7 @@ namespace d3d
 		std::unique_ptr<Texture> m_texture{};
 		std::unique_ptr<Material> m_material{};
 		std::unique_ptr<Mesh> m_mesh{};
+		std::unique_ptr<Mesh> m_cubeMesh{};
 
 		//std::unordered_map<std::string, std::unique_ptr<Mesh>> m_meshes;
 	};
