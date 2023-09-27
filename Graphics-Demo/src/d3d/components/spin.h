@@ -26,8 +26,8 @@ namespace d3d
 		}
 
 
-		Spin(GameObject& gameObject, Transform& transform)
-			: Component(gameObject, transform)
+		Spin(GameObject& gameObject)
+			: Component(gameObject)
 		{
 			
 		}

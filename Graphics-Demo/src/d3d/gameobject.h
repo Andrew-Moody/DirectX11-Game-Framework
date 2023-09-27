@@ -14,13 +14,19 @@ namespace d3d
 	class Mesh;
 	class Material;
 
-	class GameObject : public IDrawable
+	class GameObject
 	{
 	public:
 
 		void draw(D3DApp& app);
 
 		void update(D3DApp& app, float deltaTime);
+
+		void setParent(GameObject* parent);
+
+		void addComponent(std::unique_ptr<Component> component);
+
+		Transform& getTransform() { return m_transform; }
 
 		GameObject(D3DApp& app, Mesh* mesh, Material* material);
 
@@ -35,5 +41,9 @@ namespace d3d
 		Material* m_material{};
 
 		std::vector<std::unique_ptr<Component>> m_components;
+
+		GameObject* m_parent{};
+
+		std::vector<GameObject*> m_children{};
 	};
 }

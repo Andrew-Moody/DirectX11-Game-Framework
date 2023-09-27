@@ -5,8 +5,8 @@
 
 namespace d3d
 {
-	Component::Component(GameObject& gameObject, Transform& transform)
-		: m_gameObject{ gameObject }, m_transform{ transform }
+	Component::Component(GameObject& gameObject)
+		: m_gameObject{ gameObject }, m_transform{ gameObject.getTransform() }
 	{
 
 	}

@@ -1,11 +1,7 @@
 #pragma once
 
-//#include <DirectXMath.h>
+#include <DirectXMath.h>
 
-namespace DirectX
-{
-	struct XMMATRIX;
-}
 
 namespace d3d
 {
@@ -34,9 +30,11 @@ namespace d3d
 
 		void rotate(float x, float y, float z);
 
+		void updateParentTransform(const Transform& parentTransform);
+
 		Transform(const TransformData& transformData);
 
-		Transform() = default;
+		Transform();
 
 		~Transform() = default;
 
@@ -46,6 +44,12 @@ namespace d3d
 
 	private:
 
-		TransformData m_transformData{};
+		void printMatrix(const DirectX::XMMATRIX& matrix) const;
+
+		void printMatrix(const DirectX::XMFLOAT4X4& matrix) const;
+
+		DirectX::XMFLOAT4X4 m_parentTransform{};
+
+		TransformData m_localTransformData{};
 	};
 }

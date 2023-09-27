@@ -11,7 +11,7 @@ namespace d3d
 
 		virtual void update(float deltaTime) = 0;
 
-		Component(GameObject& gameObject, Transform& transform);
+		Component(GameObject& gameObject);
 
 		virtual inline ~Component() = 0;
 

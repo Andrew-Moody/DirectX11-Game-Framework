@@ -1,7 +1,9 @@
 #include "transform.h"
 
-
 #include <DirectXMath.h>
+
+#include <iostream>
+
 
 namespace d3d
 {
@@ -9,31 +11,68 @@ namespace d3d
 
 	XMMATRIX Transform::getTransformMatrix() const
 	{
-		return XMMatrixTranspose(
-			XMMatrixScaling(m_transformData.scaleX, m_transformData.scaleY, m_transformData.scaleZ) *
-			XMMatrixRotationRollPitchYaw(m_transformData.rotX, m_transformData.rotY, m_transformData.rotZ) *
-			XMMatrixTranslation(m_transformData.posX, m_transformData.posY, m_transformData.posZ)
+		return XMLoadFloat4x4(&m_parentTransform) * XMMatrixTranspose(
+			XMMatrixScaling(m_localTransformData.scaleX, m_localTransformData.scaleY, m_localTransformData.scaleZ) *
+			XMMatrixRotationRollPitchYaw(m_localTransformData.rotX, m_localTransformData.rotY, m_localTransformData.rotZ) *
+			XMMatrixTranslation(m_localTransformData.posX, m_localTransformData.posY, m_localTransformData.posZ)
 		);
 	}
 
 	void Transform::translate(float x, float y, float z)
 	{
-		m_transformData.posX += x;
-		m_transformData.posY += y;
-		m_transformData.posZ += z;
+		m_localTransformData.posX += x;
+		m_localTransformData.posY += y;
+		m_localTransformData.posZ += z;
 	}
 
 	void Transform::rotate(float x, float y, float z)
 	{
-		m_transformData.rotX += DirectX::XMConvertToRadians(x);
-		m_transformData.rotY += DirectX::XMConvertToRadians(y);
-		m_transformData.rotZ += DirectX::XMConvertToRadians(z);
+		m_localTransformData.rotX += DirectX::XMConvertToRadians(x);
+		m_localTransformData.rotY += DirectX::XMConvertToRadians(y);
+		m_localTransformData.rotZ += DirectX::XMConvertToRadians(z);
+	}
+
+
+	void Transform::updateParentTransform(const Transform& parent)
+	{
+		XMStoreFloat4x4(&m_parentTransform, parent.getTransformMatrix());
 	}
 
 
 	Transform::Transform(const TransformData& transformData)
-		: m_transformData{ transformData }
+		: m_localTransformData{ transformData }
 	{
+		XMStoreFloat4x4(&m_parentTransform, XMMatrixIdentity());
+	}
 
+
+	Transform::Transform()
+	{
+		XMStoreFloat4x4(&m_parentTransform, XMMatrixIdentity());
+	}
+
+
+	void Transform::printMatrix(const XMMATRIX& matrix) const
+	{
+		XMFLOAT4X4 float4x4;
+
+		XMStoreFloat4x4(&float4x4, matrix);
+
+		printMatrix(float4x4);
+	}
+
+	void Transform::printMatrix(const XMFLOAT4X4& matrix) const
+	{
+		for (size_t i = 0; i < 4; ++i)
+		{
+			for (size_t j = 0; j < 4; ++j)
+			{
+				std::cout << m_parentTransform(i, j) << " ";
+			}
+
+			std::cout << '\n';
+		}
+
+		std::cout << '\n';
 	}
 }

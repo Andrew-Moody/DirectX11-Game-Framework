@@ -1,5 +1,5 @@
 #pragma once
-#include "idrawable.h"
+#include "gameobject.h"
 
 #include "constantbuffer.h"
 
@@ -37,7 +37,7 @@ namespace d3d
 
 		std::unique_ptr<IBindable> m_camera{};
 
-		std::vector<std::unique_ptr<IDrawable>> m_drawables{};
+		std::vector<std::unique_ptr<GameObject>> m_gameObjects{};
 
 		ConstantBuffer<DirectX::XMMATRIX> m_worldMatCBuffer{};
 

@@ -40,14 +40,17 @@ namespace d3d
 
 		Material* material = app.getResourceManager().getMaterial();
 
+		m_gameObjects.push_back(std::make_unique<GameObject>(app, cubeMesh, material));
 
-		//m_drawables.push_back
-
-		m_drawables.push_back(std::make_unique<GameObject>(app, cubeMesh, material));
+		m_gameObjects[0]->addComponent(std::make_unique<Spin>(*(m_gameObjects[0].get())));
 
 		Mesh* mesh = app.getResourceManager().getMesh();
 
-		m_drawables.push_back(std::make_unique<GameObject>(app, mesh, material));
+		m_gameObjects.push_back(std::make_unique<GameObject>(app, mesh, material));
+
+		m_gameObjects[1]->addComponent(std::make_unique<Spin>(*(m_gameObjects[1].get())));
+
+		m_gameObjects[1]->setParent(m_gameObjects[0].get());
 	}
 
 
@@ -64,9 +67,9 @@ namespace d3d
 		app.getResourceManager().getTexture()->bind(app);
 
 
-		for (auto& drawable : m_drawables)
+		for (auto& gameObject : m_gameObjects)
 		{
-			drawable->draw(app);
+			gameObject->draw(app);
 		}
 	}
 
@@ -75,9 +78,9 @@ namespace d3d
 	{
 		dynamic_cast<Camera*>(m_camera.get())->update(app, deltaTime);
 
-		for (auto& drawable : m_drawables)
+		for (auto& gameObject : m_gameObjects)
 		{
-			drawable->update(app, deltaTime);
+			gameObject->update(app, deltaTime);
 		}
 	}
 
