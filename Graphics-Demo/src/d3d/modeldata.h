@@ -3,10 +3,12 @@
 #include "vertex.h"
 
 #include <vector>
+#include <unordered_map>
 
 struct aiScene;
 struct aiNode;
 struct aiMesh;
+struct aiBone;
 
 namespace d3d
 {
@@ -27,7 +29,9 @@ namespace d3d
 
 		void processNode(const aiNode* node, const aiScene* scene);
 
-		void processMesh(const aiMesh* node, const aiScene* scene);
+		void processMesh(const aiMesh* mesh, const aiNode* meshNode, const aiScene* scene);
+
+		void processBoneNode(const aiNode* node, const std::unordered_map<const aiNode*, const aiBone*>& skeletonNodes);
 
 		struct MeshData
 		{

@@ -8,6 +8,9 @@
 #include <assimp/scene.h>
 
 #include <vector>
+#include <unordered_map>
+#include <queue>
+
 
 namespace d3d
 {
@@ -32,7 +35,8 @@ namespace d3d
 	{
 		for (size_t i = 0; i < node->mNumMeshes; ++i)
 		{
-			processMesh(scene->mMeshes[node->mMeshes[i]], scene);
+
+			processMesh(scene->mMeshes[node->mMeshes[i]], node, scene);
 		}
 
 
@@ -44,8 +48,10 @@ namespace d3d
 	}
 
 
-	void ModelData::processMesh(const aiMesh* mesh, const aiScene* scene)
+	void ModelData::processMesh(const aiMesh* mesh, const aiNode* meshNode, const aiScene* scene)
 	{
+		std::cout << "Mesh: " << mesh->mName.C_Str() << ", Node: " << meshNode->mName.C_Str() << '\n' << '\n';
+
 		m_meshData.push_back(MeshData());
 
 		std::vector<Vertex>& vertices{ m_meshData.back().Vertices};
@@ -72,5 +78,110 @@ namespace d3d
 				indices.push_back(static_cast<UINT16>(face.mIndices[i]));
 			}
 		}
+
+		
+
+		if (mesh->HasBones())
+		{
+			// populate the set of nodes that make up the skeleton
+			std::unordered_map<const aiNode*, const aiBone*> skeletonNodes;
+
+			for (size_t i = 0; i < mesh->mNumBones; ++i)
+			{
+				const aiNode* boneNode = scene->mRootNode->FindNode(mesh->mBones[i]->mName);
+
+				skeletonNodes[boneNode] = mesh->mBones[i];
+
+				// Follow the chain of parents up to the mesh (or meshes parent if sibling)
+				// This is neccessary if the node hierarchy contains nodes that aren't bones
+				while (boneNode != meshNode && boneNode != meshNode->mParent)
+				{
+					// mark a node as being a parent of a bone
+					if (skeletonNodes.find(boneNode) == skeletonNodes.end())
+					{
+						skeletonNodes[boneNode] = nullptr;
+					}
+
+					boneNode = boneNode->mParent;
+				}
+			}
+
+			// If the first child of mesh is a bone it is most likely the skeleton root
+			// otherwise search from the parent of mesh until the first bone is found
+
+			const aiNode* root{ meshNode->mChildren[0] };
+
+			auto iter = skeletonNodes.find(root);
+
+			if (iter == skeletonNodes.end() || !iter->second)
+			{
+				root = meshNode->mParent;
+
+				std::queue<aiNode*> nodesToCheck{};
+
+				nodesToCheck.push(meshNode->mParent);
+
+				while (!nodesToCheck.empty())
+				{
+					aiNode* current = nodesToCheck.front();
+					nodesToCheck.pop();
+
+					std::cout << "Checking: " << current->mName.C_Str() << '\n';
+
+					iter = skeletonNodes.find(current);
+
+					if (iter != skeletonNodes.end() && iter->second)
+					{
+						root = current;
+						break;
+					}
+
+					for (size_t i = 0; i < current->mNumChildren; ++i)
+					{
+						std::cout << "Pushing: " << current->mChildren[i]->mName.C_Str() << '\n';
+
+						nodesToCheck.push(current->mChildren[i]);
+					}
+				}
+			}
+
+			//processBoneNode(meshNode->mParent, skeletonNodes);
+
+			// This won't catch IK bones but thats fine now
+			processBoneNode(root, skeletonNodes);
+
+			std::cout << '\n';
+		}
+	}
+
+
+	void ModelData::processBoneNode(const aiNode* node, const std::unordered_map<const aiNode*, const aiBone*>& skeletonNodes)
+	{
+		static int indent{};
+
+		for (int i = 0; i < indent; ++i)
+		{
+			std::cout << "|  ";
+		}
+
+		auto iter = skeletonNodes.find(node);
+
+		if (iter != skeletonNodes.end() && iter->second)
+		{
+			std::cout << "Bone: " << iter->second->mName.C_Str() << '\n';
+		}
+		else
+		{
+			std::cout << "Node: " << node->mName.C_Str() << '\n';
+		}
+
+		indent++;
+
+		for (size_t i = 0; i < node->mNumChildren; ++i)
+		{
+			processBoneNode(node->mChildren[i], skeletonNodes);
+		}
+
+		indent--;
 	}
 }

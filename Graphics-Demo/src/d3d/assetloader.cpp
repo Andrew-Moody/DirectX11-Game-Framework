@@ -22,6 +22,7 @@ namespace d3d
 	{
 		Assimp::Importer importer;
 
+		// may need aiProcess_FlipWindingOrder in the future
 		constexpr unsigned int flags{ aiProcess_Triangulate | aiProcess_ConvertToLeftHanded };
 
 		const aiScene* scene = importer.ReadFile(filePath, flags);

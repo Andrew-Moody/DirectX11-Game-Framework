@@ -67,7 +67,7 @@ namespace d3d
 		{
 			for (size_t j = 0; j < 4; ++j)
 			{
-				std::cout << m_parentTransform(i, j) << " ";
+				std::cout << matrix(i, j) << " ";
 			}
 
 			std::cout << '\n';
