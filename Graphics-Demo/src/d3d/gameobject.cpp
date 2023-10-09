@@ -79,7 +79,7 @@ namespace d3d
 
 
 	GameObject::GameObject(D3DApp& app, Mesh* mesh, Material* material)
-		: m_transform{}, m_mesh{ mesh }, m_material{ material }
+		: m_app{ app }, m_transform {}, m_mesh{ mesh }, m_material{ material }
 	{
 		
 	}

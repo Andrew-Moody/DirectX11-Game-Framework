@@ -10,6 +10,7 @@
 #include "samplerstate.h"
 #include "texture.h"
 #include "material.h"
+#include "modeldata.h"
 
 #include <memory>
 #include <string>
@@ -38,6 +39,7 @@ namespace d3d
 
 		SamplerState* getSamplerState() { return m_samplerState.get(); }
 
+		ModelData* getModel() { return m_model.get(); }
 
 	private:
 
@@ -49,6 +51,7 @@ namespace d3d
 		std::unique_ptr<SamplerState> m_samplerState{};
 		std::unique_ptr<Texture> m_texture{};
 		std::unique_ptr<Material> m_material{};
+		std::unique_ptr<ModelData> m_model{};
 		std::unique_ptr<Mesh> m_mesh{};
 		std::unique_ptr<Mesh> m_cubeMesh{};
 

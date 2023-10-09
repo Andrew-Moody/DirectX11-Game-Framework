@@ -6,8 +6,8 @@
 
 namespace d3d
 {
-	template<typename T>
-	void ConstantBuffer<T>::bind(D3DApp& app)
+	template<typename T, size_t N>
+	void ConstantBuffer<T, N>::bind(D3DApp& app)
 	{
 		DB_LOG("Binding ConstantBuffer to slot " << m_startSlot);
 
@@ -15,28 +15,28 @@ namespace d3d
 	}
 
 
-	template<typename T>
-	void ConstantBuffer<T>::setData(D3DApp& app, const T& data)
+	template<typename T, size_t N>
+	void ConstantBuffer<T, N>::setData(D3DApp& app, const T& data)
 	{
 		D3D11_MAPPED_SUBRESOURCE mappedResource{};
 
 		HR(app.getContext().Map(m_buffer.Get(), 0u, D3D11_MAP_WRITE_DISCARD, 0u, &mappedResource));
 
-		memcpy(mappedResource.pData, &data, sizeof(T));
+		memcpy(mappedResource.pData, &data, sizeof(T) * N);
 
 		app.getContext().Unmap(m_buffer.Get(), 0u);
 	}
 
 
-	template<typename T>
-	ConstantBuffer<T>::ConstantBuffer(D3DApp& app, UINT startSlot, const T& data)
+	template<typename T, size_t N>
+	ConstantBuffer<T, N>::ConstantBuffer(D3DApp& app, UINT startSlot, const T& data)
 		: m_startSlot{ startSlot }
 	{
 		DB_LOG("Creating ContextBuffer, ByteWidth: " << sizeof(T) << '\n');
 
 		D3D11_BUFFER_DESC m_bufferDesc{};
 		
-		m_bufferDesc.ByteWidth = sizeof(T);
+		m_bufferDesc.ByteWidth = sizeof(T) * N;
 		m_bufferDesc.StructureByteStride = 0u;
 		m_bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 		m_bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
@@ -52,6 +52,9 @@ namespace d3d
 		DB_ASSERT(m_buffer.Get());
 	}
 
+	// Used for single matrices
+	template class ConstantBuffer<DirectX::XMMATRIX, 1>;
 
-	template class ConstantBuffer<DirectX::XMMATRIX>;
+	// Used for bone transformations
+	template class ConstantBuffer<DirectX::XMMATRIX, 64>;
 }

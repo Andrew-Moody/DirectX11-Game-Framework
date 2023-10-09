@@ -5,6 +5,7 @@
 
 #include <string>
 #include <vector>
+#include <array>
 #include <memory>
 
 namespace DirectX
@@ -29,6 +30,10 @@ namespace d3d
 
 		void setViewProjMatrix(D3DApp& app, const DirectX::XMMATRIX& projectionMatrix);
 
+		void setBoneTransCBuffer(D3DApp& app, const std::array<DirectX::XMMATRIX, 64>& boneTransforms);
+
+		std::array<DirectX::XMMATRIX, 64>& getBoneTransforms() { return m_boneTransforms; }
+
 		D3DScene(D3DApp& app, const std::string& path);
 
 		D3DScene() = default;
@@ -39,8 +44,12 @@ namespace d3d
 
 		std::vector<std::unique_ptr<GameObject>> m_gameObjects{};
 
-		ConstantBuffer<DirectX::XMMATRIX> m_worldMatCBuffer{};
+		std::array<DirectX::XMMATRIX, 64> m_boneTransforms{};
 
-		ConstantBuffer<DirectX::XMMATRIX> m_viewProjMatCBuffer{};
+		ConstantBuffer<DirectX::XMMATRIX, 1> m_worldMatCBuffer{};
+
+		ConstantBuffer<DirectX::XMMATRIX, 1> m_viewProjMatCBuffer{};
+
+		ConstantBuffer<DirectX::XMMATRIX, 64> m_boneTransCBuffer{};
 	};
 }

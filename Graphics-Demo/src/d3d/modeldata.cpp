@@ -3,17 +3,24 @@
 #include "d3dapp.h"
 #include "vertex.h"
 #include "mesh.h"
-
+#include "skeletondata.h"
+#include "mathutil.h"
 
 #include <assimp/scene.h>
+#include <DirectXMath.h>
 
+#include <iostream>
 #include <vector>
+#include <string>
 #include <unordered_map>
 #include <queue>
 
 
+
 namespace d3d
 {
+	using namespace DirectX;
+
 	Mesh ModelData::getMesh(D3DApp& app, size_t index)
 	{
 		if (index < m_meshData.size())
@@ -24,15 +31,92 @@ namespace d3d
 		return Mesh();
 	}
 
+	const SkeletonData* ModelData::getSkeleton(size_t index) const
+	{
+		return index < m_skeletons.size() ? &m_skeletons[index] : nullptr;
+	}
+
+
+	const AnimationData* ModelData::getAnimation(const std::string& name) const
+	{
+		auto iter = m_animations.find(name);
+
+		return iter != m_animations.end() ? &iter->second : nullptr;
+	}
 
 	ModelData::ModelData(const aiScene* scene)
+		: m_scene{ scene }
 	{
+		std::string axisLabels[]{ "X", "Y", "Z" };
+		const char signLabels[3] = { '-', '*', ' ' };
+
+		// Print information about the scene to help debug coordinate system issues
+
+		int upAxis = 0;
+		scene->mMetaData->Get("UpAxis", upAxis);
+
+		int upAxisSign = 0;
+		scene->mMetaData->Get("UpAxisSign", upAxisSign);
+
+		int forwardAxis = 0;
+		scene->mMetaData->Get("FrontAxis", forwardAxis);
+
+		int forwardAxisSign = 0;
+		scene->mMetaData->Get("FrontAxisSign", forwardAxisSign);
+
+		int rightAxis = 0;
+		scene->mMetaData->Get("CoordAxis", rightAxis);
+
+		int rightAxisSign = 0;
+		scene->mMetaData->Get("CoordAxisSign", rightAxisSign);
+
+		std::cout << "Up Axis: "  << signLabels[upAxisSign + 1] << axisLabels[upAxis] << '\n';
+		std::cout << "Forward Axis: " << signLabels[forwardAxisSign + 1] << axisLabels[forwardAxis] << '\n';
+		std::cout << "Right Axis: " << signLabels[rightAxisSign + 1] << axisLabels[rightAxis] << '\n';
+		std::cout << '\n';
+
+
+		std::cout << "Scene transform:" << '\n';
+		std::cout << "SceneRoot name: " << scene->mRootNode->mName.C_Str() << '\n';
+		printMatrix(scene->mRootNode->mTransformation);
+		printDecomp(scene->mRootNode->mTransformation);
+		std::cout << '\n';
+
+
+		/*XMFLOAT4X4 test{};
+
+		XMStoreFloat4x4(&test, XMMatrixRotationRollPitchYaw(1.0f, 2.0f, 3.0f));
+
+		std::cout << "Decomposition Test" << '\n';
+		printMatrix(test);
+		printDecomp(test);
+		std::cout << '\n';*/
+
+
+
 		processNode(scene->mRootNode, scene);
+
+		if (scene->HasAnimations())
+		{
+			for (size_t i = 0; i < scene->mNumAnimations; ++i)
+			{
+				const aiAnimation* anim = scene->mAnimations[i];
+
+				std::cout << "Animation: " << anim->mName.C_Str() << '\n';
+
+				m_animations.emplace(std::make_pair(anim->mName.C_Str(), AnimationData(anim)));
+			}
+		}
 	}
 
 
 	void ModelData::processNode(const aiNode* node, const aiScene* scene)
 	{
+		/*std::cout << "Process Node: " << node->mName.C_Str() << '\n';
+		printMatrix(node->mTransformation);
+		printDecomp(node->mTransformation);
+		std::cout << '\n';*/
+
 		for (size_t i = 0; i < node->mNumMeshes; ++i)
 		{
 
@@ -57,13 +141,43 @@ namespace d3d
 		std::vector<Vertex>& vertices{ m_meshData.back().Vertices};
 		vertices.reserve(mesh->mNumVertices);
 		
+		//std::cout << "vertex positions" << '\n';
+
 		for (size_t i = 0; i < mesh->mNumVertices; ++i)
 		{
-			aiVector3D vertex = mesh->mVertices[i];
+			const aiVector3D* pos = &mesh->mVertices[i];
 
-			aiVector3D texCoords = mesh->mTextureCoords[0][i];
+			const aiVector3D* nor = &mesh->mNormals[i];
 
-			vertices.push_back({ vertex.x, vertex.y, vertex.z, texCoords.x, texCoords.y});
+			const aiVector3D* tex = &mesh->mTextureCoords[0][i];
+
+			const aiVector3D* tan = mesh->mTangents ? &mesh->mTangents[i] : nullptr;
+
+			XMFLOAT3 position(pos->x, pos->y, pos->z);
+
+			XMFLOAT3 normal(nor->x, nor->y, nor->z);
+
+			XMFLOAT2 texCoord(tex->x, tex->y);
+
+			XMFLOAT4 tangent(0.0f, 0.0f, 0.0f, 1.0f);
+
+			if (tan)
+			{
+				tangent = XMFLOAT4(tan->x, tan->y, tan->z, 1.0f);
+			}
+
+			// Will have to set weights and bone indices later when processing the bones
+
+			vertices.push_back({ position, normal, texCoord, tangent,
+				{ 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 } }
+			);
+
+			/*vertices.push_back({ position, normal, texCoord, tangent,
+				{ 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 }, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0, 0, 0, 0 } }
+			);*/
+
+			
+			//std::cout << "x: " << vertices[i].Position.x << ", y: " << vertices[i].Position.y << ", z: " << vertices[i].Position.z << '\n' << '\n';
 		}
 
 		std::vector<UINT16>& indices{ m_meshData.back().Indices};
@@ -79,78 +193,11 @@ namespace d3d
 			}
 		}
 
-		
-
 		if (mesh->HasBones())
 		{
-			// populate the set of nodes that make up the skeleton
-			std::unordered_map<const aiNode*, const aiBone*> skeletonNodes;
+			m_skeletons.push_back(SkeletonData(mesh, meshNode, scene));
 
-			for (size_t i = 0; i < mesh->mNumBones; ++i)
-			{
-				const aiNode* boneNode = scene->mRootNode->FindNode(mesh->mBones[i]->mName);
-
-				skeletonNodes[boneNode] = mesh->mBones[i];
-
-				// Follow the chain of parents up to the mesh (or meshes parent if sibling)
-				// This is neccessary if the node hierarchy contains nodes that aren't bones
-				while (boneNode != meshNode && boneNode != meshNode->mParent)
-				{
-					// mark a node as being a parent of a bone
-					if (skeletonNodes.find(boneNode) == skeletonNodes.end())
-					{
-						skeletonNodes[boneNode] = nullptr;
-					}
-
-					boneNode = boneNode->mParent;
-				}
-			}
-
-			// If the first child of mesh is a bone it is most likely the skeleton root
-			// otherwise search from the parent of mesh until the first bone is found
-
-			const aiNode* root{ meshNode->mChildren[0] };
-
-			auto iter = skeletonNodes.find(root);
-
-			if (iter == skeletonNodes.end() || !iter->second)
-			{
-				root = meshNode->mParent;
-
-				std::queue<aiNode*> nodesToCheck{};
-
-				nodesToCheck.push(meshNode->mParent);
-
-				while (!nodesToCheck.empty())
-				{
-					aiNode* current = nodesToCheck.front();
-					nodesToCheck.pop();
-
-					std::cout << "Checking: " << current->mName.C_Str() << '\n';
-
-					iter = skeletonNodes.find(current);
-
-					if (iter != skeletonNodes.end() && iter->second)
-					{
-						root = current;
-						break;
-					}
-
-					for (size_t i = 0; i < current->mNumChildren; ++i)
-					{
-						std::cout << "Pushing: " << current->mChildren[i]->mName.C_Str() << '\n';
-
-						nodesToCheck.push(current->mChildren[i]);
-					}
-				}
-			}
-
-			//processBoneNode(meshNode->mParent, skeletonNodes);
-
-			// This won't catch IK bones but thats fine now
-			processBoneNode(root, skeletonNodes);
-
-			std::cout << '\n';
+			m_skeletons.back().populateBoneWeights(vertices);
 		}
 	}
 
@@ -166,13 +213,19 @@ namespace d3d
 
 		auto iter = skeletonNodes.find(node);
 
-		if (iter != skeletonNodes.end() && iter->second)
+		if (iter != skeletonNodes.end())
 		{
-			std::cout << "Bone: " << iter->second->mName.C_Str() << '\n';
-		}
-		else
-		{
-			std::cout << "Node: " << node->mName.C_Str() << '\n';
+			
+			if (iter->second)
+			{
+				// Node is a bone
+				std::cout << "Bone: " << iter->second->mName.C_Str() << '\n';
+			}
+			else
+			{
+				// Node is not a bone but is a part of the skeleton structure
+				std::cout << "Node: " << node->mName.C_Str() << '\n';
+			}
 		}
 
 		indent++;

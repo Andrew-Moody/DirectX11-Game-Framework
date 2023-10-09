@@ -2,7 +2,7 @@
 
 namespace d3d
 {
-	const std::vector<Vertex> MeshPrimitives::s_cubeVertices{
+	const std::vector<SimpleVertex> MeshPrimitives::s_cubeVertices{
 			{ -0.5f, -0.5f, -0.5f,  0.0f, 1.0f },
 			{ -0.5f, 0.5f,	-0.5f,	0.0f, 0.0f },
 			{ 0.5f,	 0.5f,	-0.5f,	1.0f, 0.0f },

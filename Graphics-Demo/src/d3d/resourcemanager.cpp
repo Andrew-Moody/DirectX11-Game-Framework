@@ -59,8 +59,14 @@ namespace d3d
 
 			std::vector<D3D11_INPUT_ELEMENT_DESC> elementDesc{
 			{"Position", 0u, DXGI_FORMAT_R32G32B32_FLOAT, 0u, 0u, D3D11_INPUT_PER_VERTEX_DATA, 0u},
-			{"TexCoord", 0u, DXGI_FORMAT_R32G32_FLOAT,  0u, 12u, D3D11_INPUT_PER_VERTEX_DATA, 0u},
-			//{"Color", 0u, DXGI_FORMAT_R8G8B8A8_UNORM, 0u, 20u, D3D11_INPUT_PER_VERTEX_DATA, 0u}
+			{"Normal", 0u, DXGI_FORMAT_R32G32B32_FLOAT,  0u, 12u, D3D11_INPUT_PER_VERTEX_DATA, 0u},
+			{"TexCoord", 0u, DXGI_FORMAT_R32G32_FLOAT,  0u, 24u, D3D11_INPUT_PER_VERTEX_DATA, 0u},
+			{"Tangent", 0u, DXGI_FORMAT_R32G32B32A32_FLOAT,  0u, 32u, D3D11_INPUT_PER_VERTEX_DATA, 0u},
+			{"Weights", 0u, DXGI_FORMAT_R32G32B32A32_FLOAT,  0u, 48u, D3D11_INPUT_PER_VERTEX_DATA, 0u},
+			{"BoneIndices", 0u, DXGI_FORMAT_R8G8B8A8_UINT,  0u, 64u, D3D11_INPUT_PER_VERTEX_DATA, 0u},
+			//{"WeightsX", 0u, DXGI_FORMAT_R32G32B32A32_FLOAT,  0u, 68u, D3D11_INPUT_PER_VERTEX_DATA, 0u},
+			//{"BoneIndicesX", 0u, DXGI_FORMAT_R8G8B8A8_UINT,  0u, 84u, D3D11_INPUT_PER_VERTEX_DATA, 0u}
+			//{"Color", 0u, DXGI_FORMAT_R8G8B8A8_UNORM, 0u, Xu, D3D11_INPUT_PER_VERTEX_DATA, 0u}
 			};
 
 			m_inputLayout = std::make_unique<InputLayout>(app, elementDesc, vsByteCode);
@@ -94,9 +100,9 @@ namespace d3d
 
 			DB_LOG("Loading Model: " << modelPath);
 
-			ModelData modelData = m_assetLoader.loadModel(modelPath);
+			m_model = std::make_unique<ModelData>(m_assetLoader.loadModel(modelPath));
 
-			m_mesh = std::make_unique<Mesh>(modelData.getMesh(app, 0u));
+			m_mesh = std::make_unique<Mesh>(m_model->getMesh(app, 0u));
 
 			/*if (m_meshes.count(modelPath) < 1)
 			{
@@ -106,6 +112,6 @@ namespace d3d
 			}*/
 		}
 
-		m_cubeMesh = std::make_unique<Mesh>(app, MeshPrimitives::getCubeVertices(), MeshPrimitives::getCubeIndices());
+		//m_cubeMesh = std::make_unique<Mesh>(app, MeshPrimitives::getCubeVertices(), MeshPrimitives::getCubeIndices());
 	}
 }

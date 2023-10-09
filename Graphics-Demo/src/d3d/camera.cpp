@@ -17,6 +17,7 @@ namespace d3d
 	void Camera::update(D3DApp& app, float deltaTime)
 	{
 		constexpr float speed{ 1.0f * 0.001f };
+		constexpr float rotSpeed{ 1.0f * 0.001f };
 
 		if (GetAsyncKeyState('W') & 0x8000)
 		{
@@ -33,6 +34,14 @@ namespace d3d
 		else if (GetAsyncKeyState('D') & 0x8000)
 		{
 			m_position.x -= speed * deltaTime;
+		}
+		else if (GetAsyncKeyState('Q') & 0x8000)
+		{
+			m_rotation.y += rotSpeed * deltaTime;
+		}
+		else if (GetAsyncKeyState('E') & 0x8000)
+		{
+			m_rotation.y -= rotSpeed * deltaTime;
 		}
 		else if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 		{

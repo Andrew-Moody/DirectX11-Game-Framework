@@ -3,8 +3,6 @@
 #include "transform.h"
 #include "component.h"
 
-#include "components/spin.h"
-
 #include <vector>
 #include <memory>
 
@@ -28,11 +26,15 @@ namespace d3d
 
 		Transform& getTransform() { return m_transform; }
 
+		D3DApp& getApp() { return m_app; }
+
 		GameObject(D3DApp& app, Mesh* mesh, Material* material);
 
 		GameObject() = default;
 
 	private:
+
+		D3DApp& m_app;
 
 		Transform m_transform{};
 

@@ -7,7 +7,7 @@ struct ID3D11Buffer;
 
 namespace d3d
 {	
-	template<typename T>
+	template<typename T, size_t N>
 	class ConstantBuffer : public IBindable
 	{
 	public:

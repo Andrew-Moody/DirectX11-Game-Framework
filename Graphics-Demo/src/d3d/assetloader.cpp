@@ -25,6 +25,8 @@ namespace d3d
 		// may need aiProcess_FlipWindingOrder in the future
 		constexpr unsigned int flags{ aiProcess_Triangulate | aiProcess_ConvertToLeftHanded };
 
+		//constexpr unsigned int flags{ aiProcess_Triangulate};
+
 		const aiScene* scene = importer.ReadFile(filePath, flags);
 
 		if (!scene)

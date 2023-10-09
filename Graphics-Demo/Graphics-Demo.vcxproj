@@ -45,6 +45,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -163,6 +164,10 @@
     <ClCompile Include="..\Dependencies\imgui\imgui_draw.cpp" />
     <ClCompile Include="..\Dependencies\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\Dependencies\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\d3d\animationdata.cpp" />
+    <ClCompile Include="src\d3d\components\animationtest.h" />
+    <ClCompile Include="src\d3d\mathutil.cpp" />
+    <ClCompile Include="src\d3d\skeletondata.cpp" />
     <ClCompile Include="src\d3d\assetloader.cpp" />
     <ClCompile Include="src\d3d\bytecode.cpp" />
     <ClCompile Include="src\d3d\camera.cpp" />
@@ -191,6 +196,9 @@
     <ClCompile Include="src\frametime.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\d3d\animationdata.h" />
+    <ClInclude Include="src\d3d\mathutil.h" />
+    <ClInclude Include="src\d3d\skeletondata.h" />
     <ClInclude Include="src\d3d\assetloader.h" />
     <ClInclude Include="src\d3d\bytecode.h" />
     <ClInclude Include="src\d3d\camera.h" />
@@ -226,10 +234,12 @@
     <FxCompile Include="src\hlsl\pixelshader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="src\hlsl\vertexshader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

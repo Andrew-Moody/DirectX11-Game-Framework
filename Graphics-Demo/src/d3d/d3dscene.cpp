@@ -14,11 +14,15 @@
 #include "pixelshader.h"
 #include "material.h"
 
+#include "components/spin.h"
+#include "components/animationtest.h"
+
 #include <DirectXMath.h>
 
 #include <string>
 #include <vector>
 #include <memory>
+
 
 namespace d3d
 {
@@ -26,31 +30,36 @@ namespace d3d
 
 	D3DScene::D3DScene(D3DApp& app, const std::string& path)
 		: m_worldMatCBuffer{ app, 0u, DirectX::XMMatrixIdentity() },
-		m_viewProjMatCBuffer{ app, 1u, DirectX::XMMatrixIdentity() }
+		m_viewProjMatCBuffer{ app, 1u, DirectX::XMMatrixIdentity() },
+		m_boneTransCBuffer{app, 2u, *m_boneTransforms.data() }
 	{
 		m_worldMatCBuffer.bind(app);
 
 		m_viewProjMatCBuffer.bind(app);
 
+		m_boneTransCBuffer.bind(app);
+
 		m_camera = std::make_unique<Camera>(app);
 
 		app.getResourceManager().loadScene(app, path);
 
-		Mesh* cubeMesh = app.getResourceManager().getCubeMesh();
+		//Mesh* cubeMesh = app.getResourceManager().getCubeMesh();
 
 		Material* material = app.getResourceManager().getMaterial();
 
-		m_gameObjects.push_back(std::make_unique<GameObject>(app, cubeMesh, material));
+		//m_gameObjects.push_back(std::make_unique<GameObject>(app, cubeMesh, material));
 
-		m_gameObjects[0]->addComponent(std::make_unique<Spin>(*(m_gameObjects[0].get())));
+		//m_gameObjects[0]->addComponent(std::make_unique<Spin>(*(m_gameObjects[0].get())));
 
 		Mesh* mesh = app.getResourceManager().getMesh();
 
 		m_gameObjects.push_back(std::make_unique<GameObject>(app, mesh, material));
 
-		m_gameObjects[1]->addComponent(std::make_unique<Spin>(*(m_gameObjects[1].get())));
+		//m_gameObjects[1]->addComponent(std::make_unique<Spin>(*(m_gameObjects[1].get())));
 
-		m_gameObjects[1]->setParent(m_gameObjects[0].get());
+		//m_gameObjects[1]->setParent(m_gameObjects[0].get());
+
+		m_gameObjects[0]->addComponent(std::make_unique<AnimationTest>(*(m_gameObjects[0].get())));
 	}
 
 
@@ -94,5 +103,10 @@ namespace d3d
 	void D3DScene::setViewProjMatrix(D3DApp& app, const DirectX::XMMATRIX& projectionMatrix)
 	{
 		m_viewProjMatCBuffer.setData(app, projectionMatrix);
+	}
+
+	void D3DScene::setBoneTransCBuffer(D3DApp& app, const std::array<DirectX::XMMATRIX, 64>& boneTransforms)
+	{
+		m_boneTransCBuffer.setData(app, *boneTransforms.data());
 	}
 }

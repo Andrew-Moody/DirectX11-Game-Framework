@@ -10,7 +10,7 @@ namespace d3d
 	{
 	public:
 
-		static const std::vector<Vertex>& getCubeVertices()
+		static const std::vector<SimpleVertex>& getCubeVertices()
 		{
 			return s_cubeVertices;
 		}
@@ -23,7 +23,7 @@ namespace d3d
 
 	private:
 
-		static const std::vector<Vertex> s_cubeVertices;
+		static const std::vector<SimpleVertex> s_cubeVertices;
 
 		static const std::vector<uint16_t> s_cubeIndices;
 	};

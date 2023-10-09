@@ -5,4 +5,4 @@ VertexShader: x64/Debug/vertexshader.cso
 PixelShader: x64/Debug/pixelshader.cso
 Texture: C:/Users/Andrew/Desktop/Blender/LowPolyPalette.png
 
-Mesh: C:/Users/Andrew/Documents/GameProject/FBX/HumanMaleDX.fbx
+Mesh: C:/Users/Andrew/Documents/GameProject/FBX/ManDX.fbx
