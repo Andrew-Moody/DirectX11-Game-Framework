@@ -12,9 +12,11 @@
 #include "meshprimitives.h"
 #include "d3dutil.h"
 #include <d3d11.h>
+#include <tinyxml2.h>
 
 #include <fstream>
 #include <string>
+#include <iostream>
 
 namespace d3d
 {
@@ -113,5 +115,33 @@ namespace d3d
 		}
 
 		//m_cubeMesh = std::make_unique<Mesh>(app, MeshPrimitives::getCubeVertices(), MeshPrimitives::getCubeIndices());
+	}
+
+
+	void ResourceManager::loadSceneXML(D3DApp& app, const std::string& path)
+	{
+		tinyxml2::XMLDocument doc{};
+		tinyxml2::XMLError error = doc.LoadFile("./src/scene.xml");
+
+		if (error)
+		{
+			std::cout << doc.ErrorStr() << '\n';
+		}
+
+		tinyxml2::XMLElement* root = doc.RootElement();
+
+		if (root)
+		{
+			std::cout << "Root was not null" << '\n';
+
+			tinyxml2::XMLNode* child = root->FirstChild();
+
+			if (child)
+			{
+				std::cout << "Child was not null" << '\n';
+
+				std::cout << child->Value() << '\n';
+			}
+		}
 	}
 }

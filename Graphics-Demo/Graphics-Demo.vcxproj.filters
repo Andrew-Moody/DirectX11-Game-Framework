@@ -126,6 +126,9 @@
     <ClCompile Include="src\d3d\mathutil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Dependencies\tinyxml2\tinyxml2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\d3d\winapp.h">
@@ -234,5 +237,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\d3d\scene.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="src\scene.xml" />
   </ItemGroup>
 </Project>

@@ -14,7 +14,7 @@
 
 #include <memory>
 #include <string>
-#include <unordered_map>
+#include <map>
 
 namespace d3d
 {
@@ -26,6 +26,8 @@ namespace d3d
 	public:
 
 		void loadScene(D3DApp& app, const std::string& path);
+
+		void loadSceneXML(D3DApp& app, const std::string& path);
 
 		InputLayout* getInputLayout() { return m_inputLayout.get(); }
 
@@ -55,6 +57,6 @@ namespace d3d
 		std::unique_ptr<Mesh> m_mesh{};
 		std::unique_ptr<Mesh> m_cubeMesh{};
 
-		//std::unordered_map<std::string, std::unique_ptr<Mesh>> m_meshes;
+		//std::map<std::string, std::unique_ptr<Mesh>> m_meshes;
 	};
 }

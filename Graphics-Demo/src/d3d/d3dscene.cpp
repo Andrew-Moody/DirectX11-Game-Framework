@@ -41,7 +41,8 @@ namespace d3d
 
 		m_camera = std::make_unique<Camera>(app);
 
-		app.getResourceManager().loadScene(app, path);
+		//app.getResourceManager().loadScene(app, path);
+		app.getResourceManager().loadSceneXML(app, path);
 
 		//Mesh* cubeMesh = app.getResourceManager().getCubeMesh();
 
