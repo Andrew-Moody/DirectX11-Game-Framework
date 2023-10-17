@@ -8,6 +8,8 @@
 #include "vertexshader.h"
 #include "pixelshader.h"
 #include "material.h"
+#include "texture.h"
+#include "gameobject.h"
 
 #include "meshprimitives.h"
 #include "d3dutil.h"
@@ -71,13 +73,20 @@ namespace d3d
 			//{"Color", 0u, DXGI_FORMAT_R8G8B8A8_UNORM, 0u, Xu, D3D11_INPUT_PER_VERTEX_DATA, 0u}
 			};
 
-			m_inputLayout = std::make_unique<InputLayout>(app, elementDesc, vsByteCode);
+			//m_inputLayout = std::make_unique<InputLayout>(app, elementDesc, vsByteCode);
+			m_bindables["InputLayout"] = std::make_unique<InputLayout>(app, elementDesc, vsByteCode);
 
-			m_vertexShader = std::make_unique<VertexShader>(app, vsByteCode);
+			//m_vertexShader = std::make_unique<VertexShader>(app, vsByteCode);
+			m_bindables["VertexShader"] = std::make_unique<VertexShader>(app, vsByteCode);
 
-			m_pixelShader = std::make_unique<PixelShader>(app, psByteCode);
+			//m_pixelShader = std::make_unique<PixelShader>(app, psByteCode);
+			m_bindables["PixelShader"] = std::make_unique<PixelShader>(app, psByteCode);
 
-			m_material = std::make_unique<Material>(m_vertexShader.get(), m_pixelShader.get());
+			//m_material = std::make_unique<Material>(m_vertexShader.get(), m_pixelShader.get());
+			m_bindables["Material"] = std::make_unique<Material>(
+				dynamic_cast<VertexShader*>(m_bindables["VertexShader"].get()),
+				dynamic_cast<PixelShader*>(m_bindables["PixelShader"].get())
+			);
 
 
 			std::string texturePath;
@@ -86,11 +95,13 @@ namespace d3d
 
 			DB_LOG("Loading Texture: " << texturePath);
 
-			TextureData texData = m_assetLoader.loadTexture(texturePath);
+			TextureData texData = m_assetLoader.loadTexture(app, texturePath);
+			
+			//m_bindables["Texture"] = std::move(m_texture);
+			m_bindables["Texture"] = std::make_unique<Texture>(app, texData);
 
-			m_texture = std::make_unique<Texture>(app, texData);
-
-			m_samplerState = std::make_unique<SamplerState>(app);
+			//m_samplerState = std::make_unique<SamplerState>(app);
+			m_bindables["SamplerState"] = std::make_unique<SamplerState>(app);
 		}
 
 
@@ -102,9 +113,10 @@ namespace d3d
 
 			DB_LOG("Loading Model: " << modelPath);
 
-			m_model = std::make_unique<ModelData>(m_assetLoader.loadModel(modelPath));
+			m_model = std::make_unique<ModelData>(m_assetLoader.loadModel(app, modelPath));
 
-			m_mesh = std::make_unique<Mesh>(m_model->getMesh(app, 0u));
+			//m_mesh = std::make_unique<Mesh>(m_model->getMesh(app, 0u));
+			//m_meshes["Man"] = std::make_unique<Mesh>(m_model->getMesh(app, 0u));
 
 			/*if (m_meshes.count(modelPath) < 1)
 			{
@@ -120,6 +132,8 @@ namespace d3d
 
 	void ResourceManager::loadSceneXML(D3DApp& app, const std::string& path)
 	{
+		using namespace tinyxml2;
+
 		tinyxml2::XMLDocument doc{};
 		tinyxml2::XMLError error = doc.LoadFile("./src/scene.xml");
 
@@ -143,5 +157,80 @@ namespace d3d
 				std::cout << child->Value() << '\n';
 			}
 		}
+
+		XMLElement* current = root->FirstChildElement();
+
+		while (current)
+		{
+			loadResource(app, current);
+
+			current = current->NextSiblingElement();
+		}
+
+	}
+
+
+	void ResourceManager::loadResource(D3DApp& app, const tinyxml2::XMLElement* element)
+	{
+		std::cout << "Loading Resource: " << element->Name() << ", id: " << element->Attribute("id") << "\n";
+
+		if (m_resources.find(element->Attribute("id")) != m_resources.end())
+		{
+			std::cout << "Element already loaded with id: " << element->Attribute("id") << '\n';
+			return;
+		}
+
+		auto iter = m_factoryFunctions.find(element->Name());
+
+		if (iter == m_factoryFunctions.end())
+		{
+			std::cout << "No factory function found for element type: " << element->Name() << '\n';
+			return;
+		}
+
+		std::unique_ptr<ISerializable> resource = iter->second();
+
+		resource->deserializeXML(app, element);
+
+		m_resources[element->Attribute("id")] = std::move(resource);
+	}
+
+
+	ISerializable* ResourceManager::getResource(const std::string& name) const
+	{
+		auto iter = m_resources.find(name);
+
+		if (iter != m_resources.end())
+		{
+			return iter->second.get();
+		}
+
+		return nullptr;
+	}
+
+
+	Mesh* ResourceManager::getMesh(const std::string& name) const
+	{
+		auto iter = m_meshes.find(name);
+
+		if (iter != m_meshes.end())
+		{
+			return iter->second.get();
+		}
+
+		return nullptr;
+	}
+
+
+	ResourceManager::ResourceManager()
+	{
+		m_factoryFunctions["InputLayout"] = []() { return std::make_unique<InputLayout>(); };
+		m_factoryFunctions["VertexShader"] = []() { return std::make_unique<VertexShader>(); };
+		m_factoryFunctions["PixelShader"] = []() { return std::make_unique<PixelShader>(); };
+		m_factoryFunctions["SamplerState"] = []() { return std::make_unique<SamplerState>(); };
+		m_factoryFunctions["Texture"] = []() { return std::make_unique<Texture>(); };
+		m_factoryFunctions["Material"] = []() { return std::make_unique<Material>(); };
+		m_factoryFunctions["Model"] = []() { return std::make_unique<ModelData>(); };
+		m_factoryFunctions["GameObject"] = []() { return std::make_unique<GameObject>(); };
 	}
 }

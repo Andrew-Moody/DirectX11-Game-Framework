@@ -46,10 +46,11 @@ namespace d3d
 
 			m_timeInAnim += deltaTime * 0.001f;
 
-			D3DApp& app = m_gameObject.getApp();
-
-			ModelData* model = app.getResourceManager().getModel();
+			D3DApp* app = m_gameObject.getApp();
+			//ModelData* model = dynamic_cast<ModelData*>(app.getResourceManager().getResource("C:/Users/Andrew/Documents/GameProject/FBX/ManDX.fbx"));
 			
+			ModelData* model = m_gameObject.getModelData();
+
 			const SkeletonData* skeleton = model->getSkeleton(0);
 			const AnimationData* animation = model->getAnimation(m_animNames[m_currentAnim]);
 
@@ -72,7 +73,7 @@ namespace d3d
 
 
 			// Retrieve the bone transform matrices from the scene
-			std::array<DirectX::XMMATRIX, 64>& boneTransforms = app.getScene().getBoneTransforms();
+			std::array<DirectX::XMMATRIX, 64>& boneTransforms = app->getScene().getBoneTransforms();
 
 			// Update the bone transform matrices
 			for (size_t i = 0; i < m_boneTransforms.size(); ++i)
@@ -85,7 +86,7 @@ namespace d3d
 			}
 
 			// Apply the changes to the constant buffer
-			app.getScene().setBoneTransCBuffer(app, boneTransforms);
+			app->getScene().setBoneTransCBuffer(*app, boneTransforms);
 		}
 
 

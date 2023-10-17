@@ -18,14 +18,30 @@ namespace d3d
 	}
 
 
-	void Mesh::update(D3DApp& app, float deltaTime)
+    void Mesh::deserializeXML(D3DApp& app, const tinyxml2::XMLElement* elment)
+    {
+		
+    }
+
+
+	/*void Mesh::update(D3DApp& app, float deltaTime)
+	{
+
+	}*/
+
+
+	Mesh::Mesh(D3DApp& app, const std::vector<Vertex>& vertices, const std::vector<uint16_t>& indices)
+		: m_vertices{vertices}, m_indices{indices}, m_vertexBuffer(app, vertices, 0u), m_indexBuffer(app, indices)
 	{
 
 	}
 
 
-	Mesh::Mesh(D3DApp& app, const std::vector<Vertex>& vertices, const std::vector<uint16_t>& indices)
-		: m_vertices{vertices}, m_indices{indices}, m_vertexBuffer(app, vertices, 0u), m_indexBuffer(app, indices)
+	Mesh::Mesh(D3DApp& app, std::vector<Vertex>&& vertices, std::vector<uint16_t>&& indices)
+		: m_vertices{std::move(vertices)},
+		m_indices{std::move(indices)},
+		m_vertexBuffer(app, m_vertices, 0u),
+		m_indexBuffer(app, m_indices)
 	{
 
 	}

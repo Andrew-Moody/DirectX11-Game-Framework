@@ -1,5 +1,6 @@
 #pragma once
 #include "ibindable.h"
+#include "iserializable.h"
 
 #include <wrl/client.h>
 
@@ -9,17 +10,21 @@ struct ID3D11PixelShader;
 
 namespace d3d
 {
-	class PixelShader : public IBindable
+	class PixelShader : public ISerializable, public IBindable
 	{
 	public:
 
 		void bind(D3DApp& app) override;
+
+		void deserializeXML(D3DApp& app, const tinyxml2::XMLElement* element) override;
 
 		PixelShader(D3DApp& app, const std::vector<uint8_t>& byteCode);
 
 		PixelShader() = default;
 
 	private:
+
+		std::vector<uint8_t> m_byteCode{};
 
 		Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
 	};

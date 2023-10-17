@@ -42,7 +42,8 @@ namespace d3d
 
 		std::unique_ptr<IBindable> m_camera{};
 
-		std::vector<std::unique_ptr<GameObject>> m_gameObjects{};
+		//std::vector<std::unique_ptr<GameObject>> m_gameObjects{};
+		std::vector<GameObject*> m_gameObjects{};
 
 		std::array<DirectX::XMMATRIX, 64> m_boneTransforms{};
 

@@ -230,6 +230,9 @@
     <ClInclude Include="src\d3d\mathutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\d3d\iserializable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\hlsl\vertexshader.hlsl" />

@@ -51,10 +51,10 @@ namespace d3d
 
 		if (boneName == "Root")
 		{
-			std::cout << "Interpolated transform for bone: " << boneName << " at time: " << timeInSeconds << ", tick: " << timeInTicks << '\n';
-			//printMatrix(transform);
-			printDecomp(transform);
-			std::cout << '\n';
+			//std::cout << "Interpolated transform for bone: " << boneName << " at time: " << timeInSeconds << ", tick: " << timeInTicks << '\n';
+			////printMatrix(transform);
+			//printDecomp(transform);
+			//std::cout << '\n';
 		}
 	}
 
@@ -69,7 +69,7 @@ namespace d3d
 		m_ticksPerSecond = animation->mTicksPerSecond;
 		m_ticksDuration = animation->mDuration;
 
-		std::cout << "TicksPerSecond: " << m_ticksPerSecond << ", Duration in ticks" << m_ticksDuration << '\n';
+		//std::cout << "TicksPerSecond: " << m_ticksPerSecond << ", Duration in ticks" << m_ticksDuration << '\n';
 
 		for (size_t boneIdx = 0; boneIdx < animation->mNumChannels; ++boneIdx)
 		{
@@ -127,10 +127,10 @@ namespace d3d
 					XMFLOAT4X4 rot;
 					XMStoreFloat4x4(&rot, rotation);
 
-					std::cout << "Rotation Matrix from XMRotationQuaternion" << '\n';
+					/*std::cout << "Rotation Matrix from XMRotationQuaternion" << '\n';
 					printMatrix(rot);
 					printDecomp(rot);
-					std::cout << '\n';
+					std::cout << '\n';*/
 				}
 			}
 
@@ -145,14 +145,14 @@ namespace d3d
 			}
 
 			
-			std::cout << "Loading Keys for bone: " << nodeAnim->mNodeName.C_Str() << '\n';
+			/*std::cout << "Loading Keys for bone: " << nodeAnim->mNodeName.C_Str() << '\n';
 			std::cout << "Position keys loaded: " << boneAnim.PositionKeys.size() << '\n';
 			std::cout << "Rotation keys loaded: " << boneAnim.RotationKeys.size() << '\n';
 			std::cout << "Scaling keys loaded: " << boneAnim.ScalingKeys.size() << '\n';
-			std::cout << '\n';
+			std::cout << '\n';*/
 		}
 
-		std::cout << '\n';
+		//std::cout << '\n';
 	}
 
 

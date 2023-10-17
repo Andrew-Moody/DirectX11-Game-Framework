@@ -203,6 +203,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\d3d\animationdata.h" />
+    <ClInclude Include="src\d3d\iserializable.h" />
     <ClInclude Include="src\d3d\mathutil.h" />
     <ClInclude Include="src\d3d\skeletondata.h" />
     <ClInclude Include="src\d3d\assetloader.h" />

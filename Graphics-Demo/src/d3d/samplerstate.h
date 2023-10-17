@@ -1,5 +1,6 @@
 #pragma once
 #include "ibindable.h"
+#include "iserializable.h"
 
 #include <wrl/client.h>
 
@@ -9,11 +10,13 @@ namespace d3d
 {
 	class D3DApp;
 	
-	class SamplerState : public IBindable
+	class SamplerState : public ISerializable, public IBindable
 	{
 	public:
 
-		void bind(D3DApp& app);
+		void bind(D3DApp& app) override;
+
+		void deserializeXML(D3DApp& app, const tinyxml2::XMLElement* element) override;
 
 		SamplerState(D3DApp& app);
 

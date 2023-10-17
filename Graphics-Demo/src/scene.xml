@@ -1,2 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<root>This is the root</root>
+<root>
+	<VertexShader id="x64/Debug/vertexshader.cso"/>
+	<PixelShader id="x64/Debug/pixelshader.cso"/>
+	<SamplerState id="DefaultSamplerState"/>
+	<Texture id="C:/Users/Andrew/Desktop/Blender/LowPolyPalette.png"/>
+	<InputLayout id="DefaultLayout">
+		<VertexShader id="x64/Debug/vertexshader.cso"/>
+	</InputLayout>
+	<Material id="DefaultMaterial">
+		<InputLayout id="DefaultLayout"/>
+		<VertexShader id="x64/Debug/vertexshader.cso"/>
+		<PixelShader id="x64/Debug/pixelshader.cso"/>
+		<SamplerState id="DefaultSamplerState"/>
+		<Texture id="C:/Users/Andrew/Desktop/Blender/LowPolyPalette.png"/>
+	</Material>
+	<Model id="C:/Users/Andrew/Documents/GameProject/FBX/ManDX.fbx"/>
+	<GameObject id="Man">
+		<Material id="DefaultMaterial"/>
+		<Model id="C:/Users/Andrew/Documents/GameProject/FBX/ManDX.fbx"/>
+	</GameObject>
+</root>

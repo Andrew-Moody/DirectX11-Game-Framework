@@ -1,5 +1,6 @@
 #pragma once
 #include "ibindable.h"
+#include "iserializable.h"
 
 //#include <d3d11.h>
 #include <wrl/client.h>
@@ -13,13 +14,15 @@ namespace d3d
 {
 	class D3DApp;
 
-	class InputLayout : public IBindable
+	class InputLayout : public ISerializable, public IBindable
 	{
 	public:
 
 		void bind(D3DApp& app) override;
 
-		InputLayout(D3DApp& app, const std::vector<D3D11_INPUT_ELEMENT_DESC>& inputDescs, const std::vector<uint8_t>& bytecode);
+		void deserializeXML(D3DApp& app, const tinyxml2::XMLElement* element) override;
+
+		InputLayout(D3DApp& app, const std::vector<D3D11_INPUT_ELEMENT_DESC>& inputDescs, const std::vector<uint8_t>& byteCode);
 
 		InputLayout() = default;
 

@@ -2,6 +2,7 @@
 
 #include "modeldata.h"
 #include "texturedata.h"
+#include "d3dapp.h"
 #include "d3dutil.h"
 
 #include <assimp/Importer.hpp>
@@ -18,7 +19,7 @@
 
 namespace d3d
 {
-	ModelData AssetLoader::loadModel(const std::string& filePath)
+	ModelData AssetLoader::loadModel(D3DApp& app, const std::string& filePath) const
 	{
 		Assimp::Importer importer;
 
@@ -35,11 +36,11 @@ namespace d3d
 			return ModelData{};
 		}
 
-		return ModelData{ scene };
+		return ModelData{ app, scene };
 	}
 
 
-	TextureData AssetLoader::loadTexture(const std::string& filePath)
+	TextureData AssetLoader::loadTexture(D3DApp& app, const std::string& filePath) const
 	{
 		TextureData texData{};
 

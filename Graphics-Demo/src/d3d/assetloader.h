@@ -10,6 +10,7 @@ struct aiMesh;
 
 namespace d3d
 {
+	class D3DApp;
 	class ModelData;
 	struct TextureData;
 
@@ -17,11 +18,9 @@ namespace d3d
 	{
 	public:
 
-		ModelData loadModel(const std::string& filePath);
+		ModelData loadModel(D3DApp& app, const std::string& filePath) const;
 
-		TextureData loadTexture(const std::string& filePath);
-
-		//ShaderData loadShader(const std::string& filePath);
+		TextureData loadTexture(D3DApp& app, const std::string& filePath) const;
 
 	private:
 		

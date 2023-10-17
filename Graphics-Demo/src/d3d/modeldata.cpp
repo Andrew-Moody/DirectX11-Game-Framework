@@ -1,13 +1,15 @@
 #include "modeldata.h"
 
-#include "d3dapp.h"
 #include "vertex.h"
 #include "mesh.h"
 #include "skeletondata.h"
 #include "mathutil.h"
+#include "d3dapp.h"
+#include "d3dutil.h"
 
 #include <assimp/scene.h>
 #include <DirectXMath.h>
+#include <tinyxml2.h>
 
 #include <iostream>
 #include <vector>
@@ -21,14 +23,17 @@ namespace d3d
 {
 	using namespace DirectX;
 
-	Mesh ModelData::getMesh(D3DApp& app, size_t index)
+    void ModelData::deserializeXML(D3DApp& app, const tinyxml2::XMLElement* element)
+    {
+		DB_ASSERT(strcmp(element->Name(), "Model") == 0);
+
+		*this = app.getResourceManager().getAssetLoader().loadModel(app, element->Attribute("id"));
+    }
+
+
+    Mesh* ModelData::getMesh(size_t index) const
 	{
-		if (index < m_meshData.size())
-		{
-			return Mesh(app, m_meshData[index].Vertices, m_meshData[index].Indices);
-		}
-		
-		return Mesh();
+		return index < m_meshes.size() ? m_meshes[index].get() : nullptr;
 	}
 
 	const SkeletonData* ModelData::getSkeleton(size_t index) const
@@ -41,11 +46,13 @@ namespace d3d
 	{
 		auto iter = m_animations.find(name);
 
-		return iter != m_animations.end() ? &iter->second : nullptr;
+		const AnimationData* animation = iter != m_animations.end() ? &iter->second : nullptr;
+
+		return animation;
 	}
 
-	ModelData::ModelData(const aiScene* scene)
-		: m_scene{ scene }
+	ModelData::ModelData(D3DApp& app, const aiScene* scene)
+		: m_app{&app}, m_scene {scene}
 	{
 		std::string axisLabels[]{ "X", "Y", "Z" };
 		const char signLabels[3] = { '-', '*', ' ' };
@@ -136,9 +143,10 @@ namespace d3d
 	{
 		std::cout << "Mesh: " << mesh->mName.C_Str() << ", Node: " << meshNode->mName.C_Str() << '\n' << '\n';
 
-		m_meshData.push_back(MeshData());
+		//m_meshData.push_back(MeshData());
 
-		std::vector<Vertex>& vertices{ m_meshData.back().Vertices};
+		//std::vector<Vertex>& vertices{ m_meshData.back().Vertices};
+		std::vector<Vertex> vertices{};
 		vertices.reserve(mesh->mNumVertices);
 		
 		//std::cout << "vertex positions" << '\n';
@@ -180,7 +188,8 @@ namespace d3d
 			//std::cout << "x: " << vertices[i].Position.x << ", y: " << vertices[i].Position.y << ", z: " << vertices[i].Position.z << '\n' << '\n';
 		}
 
-		std::vector<UINT16>& indices{ m_meshData.back().Indices};
+		//std::vector<UINT16>& indices{ m_meshData.back().Indices};
+		std::vector<UINT16> indices{};
 		indices.reserve(static_cast<size_t>(mesh->mNumFaces * 3));
 
 		for (size_t face_idx = 0; face_idx < mesh->mNumFaces; ++face_idx)
@@ -199,6 +208,9 @@ namespace d3d
 
 			m_skeletons.back().populateBoneWeights(vertices);
 		}
+
+
+		m_meshes.push_back(std::make_unique<Mesh>(*m_app, std::move(vertices), std::move(indices)));
 	}
 
 

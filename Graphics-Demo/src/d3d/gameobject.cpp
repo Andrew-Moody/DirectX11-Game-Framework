@@ -7,19 +7,59 @@
 #include "components/spin.h"
 
 #include "d3dapp.h"
+#include "d3dutil.h"
+
+#include <tinyxml2.h>
 
 #include <vector>
 
 
 namespace d3d
 {
+	void GameObject::deserializeXML(D3DApp& app, const tinyxml2::XMLElement* element)
+	{
+		using namespace tinyxml2;
+
+		m_app = &app;
+
+		DB_ASSERT(strcmp(element->Name(), "GameObject") == 0);
+
+		const XMLElement* materialElement = element->FirstChildElement("Material");
+
+		const XMLElement* modelElement = element->FirstChildElement("Model");
+
+		if (!materialElement)
+		{
+			std::cout << "Material missing from gameObject: " << element->Attribute("id") << '\n';
+			return;
+		}
+
+		if (!modelElement)
+		{
+			std::cout << "Model missing from gameObject: " << element->Attribute("id") << '\n';
+			return;
+		}
+
+		m_material = dynamic_cast<Material*>(app.getResourceManager().getResource(materialElement->Attribute("id")));
+		m_model = dynamic_cast<ModelData*>(app.getResourceManager().getResource(modelElement->Attribute("id")));
+
+		if (m_model)
+		{
+			m_mesh = m_model->getMesh(0);
+		}
+	}
+
+
 	void GameObject::draw(D3DApp& app)
 	{
-		app.getScene().setWorldMatrix(app, m_transform.getTransformMatrix());
+		if (m_mesh && m_material)
+		{
+			app.getScene().setWorldMatrix(app, m_transform.getTransformMatrix());
 
-		m_material->bind(app);
+			m_material->bind(app);
 
-		m_mesh->draw(app);
+			m_mesh->draw(app);
+		}
 	}
 
 
@@ -79,7 +119,7 @@ namespace d3d
 
 
 	GameObject::GameObject(D3DApp& app, Mesh* mesh, Material* material)
-		: m_app{ app }, m_transform {}, m_mesh{ mesh }, m_material{ material }
+		: m_app{ &app }, m_transform {}, m_mesh{ mesh }, m_material{ material }
 	{
 		
 	}

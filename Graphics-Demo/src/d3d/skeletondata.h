@@ -1,5 +1,5 @@
 #pragma once
-#include "animationdata.h"
+//#include "animationdata.h"
 
 #include <DirectXMath.h>
 
@@ -16,6 +16,7 @@ struct aiBone;
 namespace d3d
 {
 	struct Vertex;
+	class AnimationData;
 
 	class SkeletonData
 	{

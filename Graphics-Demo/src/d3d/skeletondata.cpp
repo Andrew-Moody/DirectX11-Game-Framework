@@ -1,6 +1,7 @@
 #include "skeletondata.h"
 
 #include "vertex.h"
+#include "animationdata.h"
 
 #include "mathutil.h"
 
@@ -232,16 +233,16 @@ namespace d3d
 
 			
 
-			std::cout << "Vertex: " << verticesGreaterThan4Weights[i]
-				<< " (" << m_boneNames[vert.BoneIndices[0]] << "," << vert.Weights.x
-				<< "), (" << m_boneNames[vert.BoneIndices[1]] << "," << vert.Weights.y
-				<< "), (" << m_boneNames[vert.BoneIndices[2]] << "," << vert.Weights.z
-				<< "), (" << m_boneNames[vert.BoneIndices[3]] << "," << vert.Weights.w
-				/*<< "), (" << m_boneNames[vert.BoneIndices2[0]] << "," << vert.Weights2.x
-				<< "), (" << m_boneNames[vert.BoneIndices2[1]] << "," << vert.Weights2.y
-				<< "), (" << m_boneNames[vert.BoneIndices2[2]] << "," << vert.Weights2.z
-				<< "), (" << m_boneNames[vert.BoneIndices2[3]] << "," << vert.Weights2.w*/
-				<< ")" << '\n';
+			//std::cout << "Vertex: " << verticesGreaterThan4Weights[i]
+			//	<< " (" << m_boneNames[vert.BoneIndices[0]] << "," << vert.Weights.x
+			//	<< "), (" << m_boneNames[vert.BoneIndices[1]] << "," << vert.Weights.y
+			//	<< "), (" << m_boneNames[vert.BoneIndices[2]] << "," << vert.Weights.z
+			//	<< "), (" << m_boneNames[vert.BoneIndices[3]] << "," << vert.Weights.w
+			//	/*<< "), (" << m_boneNames[vert.BoneIndices2[0]] << "," << vert.Weights2.x
+			//	<< "), (" << m_boneNames[vert.BoneIndices2[1]] << "," << vert.Weights2.y
+			//	<< "), (" << m_boneNames[vert.BoneIndices2[2]] << "," << vert.Weights2.z
+			//	<< "), (" << m_boneNames[vert.BoneIndices2[3]] << "," << vert.Weights2.w*/
+			//	<< ")" << '\n';
 		}
 
 		std::cout << '\n';
@@ -252,16 +253,16 @@ namespace d3d
 
 			float sum = vert.Weights.x + vert.Weights.y + vert.Weights.z + vert.Weights.w;
 
-			std::cout << "Vertex: " << i << " , sum: " << sum
-				  << " (" << m_boneNames[vert.BoneIndices[0]] << "," << vert.Weights.x
-				<< "), (" << m_boneNames[vert.BoneIndices[1]] << "," << vert.Weights.y
-				<< "), (" << m_boneNames[vert.BoneIndices[2]] << "," << vert.Weights.z
-				<< "), (" << m_boneNames[vert.BoneIndices[3]] << "," << vert.Weights.w
-				/*<< "), (" << m_boneNames[vert.BoneIndices2[0]] << "," << vert.Weights2.x
-				<< "), (" << m_boneNames[vert.BoneIndices2[1]] << "," << vert.Weights2.y
-				<< "), (" << m_boneNames[vert.BoneIndices2[2]] << "," << vert.Weights2.z
-				<< "), (" << m_boneNames[vert.BoneIndices2[3]] << "," << vert.Weights2.w*/
-				<< ")" << '\n';
+			//std::cout << "Vertex: " << i << " , sum: " << sum
+			//	  << " (" << m_boneNames[vert.BoneIndices[0]] << "," << vert.Weights.x
+			//	<< "), (" << m_boneNames[vert.BoneIndices[1]] << "," << vert.Weights.y
+			//	<< "), (" << m_boneNames[vert.BoneIndices[2]] << "," << vert.Weights.z
+			//	<< "), (" << m_boneNames[vert.BoneIndices[3]] << "," << vert.Weights.w
+			//	/*<< "), (" << m_boneNames[vert.BoneIndices2[0]] << "," << vert.Weights2.x
+			//	<< "), (" << m_boneNames[vert.BoneIndices2[1]] << "," << vert.Weights2.y
+			//	<< "), (" << m_boneNames[vert.BoneIndices2[2]] << "," << vert.Weights2.z
+			//	<< "), (" << m_boneNames[vert.BoneIndices2[3]] << "," << vert.Weights2.w*/
+			//	<< ")" << '\n';
 		}
 	}
 

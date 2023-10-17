@@ -10,8 +10,6 @@ namespace d3d
 
 		virtual void bind(D3DApp& app) = 0;
 
-		//virtual void update(D3DApp& app, float deltaTime) = 0;
-
 		virtual inline ~IBindable() = 0;
 	};
 

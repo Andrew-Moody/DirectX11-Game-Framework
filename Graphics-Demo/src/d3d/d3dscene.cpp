@@ -39,28 +39,39 @@ namespace d3d
 
 		m_boneTransCBuffer.bind(app);
 
+		// Eventually want to turn Camera into a gameObject
 		m_camera = std::make_unique<Camera>(app);
+
+
 
 		//app.getResourceManager().loadScene(app, path);
 		app.getResourceManager().loadSceneXML(app, path);
 
-		//Mesh* cubeMesh = app.getResourceManager().getCubeMesh();
 
-		Material* material = app.getResourceManager().getMaterial();
+		GameObject* manGO = dynamic_cast<GameObject*>(app.getResourceManager().getResource("Man"));
+		manGO->addComponent(std::make_unique<AnimationTest>(*(manGO)));
+		m_gameObjects.push_back(manGO);
 
-		//m_gameObjects.push_back(std::make_unique<GameObject>(app, cubeMesh, material));
 
-		//m_gameObjects[0]->addComponent(std::make_unique<Spin>(*(m_gameObjects[0].get())));
+		//Material* material = app.getResourceManager().getMaterial();
+		//Material* material = dynamic_cast<Material*>(app.getResourceManager().getResource("DefaultMaterial"));
 
-		Mesh* mesh = app.getResourceManager().getMesh();
+		//Mesh* mesh = app.getResourceManager().getMesh();
 
-		m_gameObjects.push_back(std::make_unique<GameObject>(app, mesh, material));
+		//ModelData* manModel = dynamic_cast<ModelData*>(app.getResourceManager().getResource("C:/Users/Andrew/Documents/GameProject/FBX/ManDX.fbx"));
 
-		//m_gameObjects[1]->addComponent(std::make_unique<Spin>(*(m_gameObjects[1].get())));
+		//Mesh* manMesh = manModel->getMesh(0);
 
-		//m_gameObjects[1]->setParent(m_gameObjects[0].get());
+		//std::unique_ptr<GameObject> manGO = std::make_unique<GameObject>(app, manMesh, material);
+		//manGO->addComponent(std::make_unique<AnimationTest>(*(manGO.get())));
+		//m_gameObjects.push_back(std::move(manGO));
 
-		m_gameObjects[0]->addComponent(std::make_unique<AnimationTest>(*(m_gameObjects[0].get())));
+		/*//Mesh* cubeMesh = app.getResourceManager().getCubeMesh();
+		Mesh* cubeMesh = app.getResourceManager().getMesh("Cube");
+		std::unique_ptr<GameObject> cubeGO = std::make_unique<GameObject>(app, cubeMesh, material);
+		cubeGO->addComponent(std::make_unique<Spin>(*(cubeGO.get())));
+		m_gameObjects.push_back(std::move(cubeGO));*/
+		//manGO->setParent(cubGO.get());
 	}
 
 
@@ -68,13 +79,16 @@ namespace d3d
 	{
 		m_camera->bind(app);
 
-		app.getResourceManager().getInputLayout()->bind(app);
+		//app.getResourceManager().getInputLayout()->bind(app);
 
-		app.getResourceManager().getMaterial()->bind(app);
+		//app.getResourceManager().getMaterial()->bind(app);
+		//dynamic_cast<IBindable*>(app.getResourceManager().getResource("DefaultMaterial"))->bind(app);
 
-		app.getResourceManager().getSamplerState()->bind(app);
+		//app.getResourceManager().getSamplerState()->bind(app);
+		//dynamic_cast<IBindable*>(app.getResourceManager().getResource("DefaultSamplerState"))->bind(app);
 
-		app.getResourceManager().getTexture()->bind(app);
+		//app.getResourceManager().getTexture()->bind(app);
+		//dynamic_cast<IBindable*>(app.getResourceManager().getResource("C:/Users/Andrew/Desktop/Blender/LowPolyPalette.png"))->bind(app);
 
 
 		for (auto& gameObject : m_gameObjects)
