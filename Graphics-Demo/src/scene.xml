@@ -15,8 +15,25 @@
 		<Texture id="C:/Users/Andrew/Desktop/Blender/LowPolyPalette.png"/>
 	</Material>
 	<Model id="C:/Users/Andrew/Documents/GameProject/FBX/ManDX.fbx"/>
-	<GameObject id="Man">
+	<GameObject id="Man2">
 		<Material id="DefaultMaterial"/>
 		<Model id="C:/Users/Andrew/Documents/GameProject/FBX/ManDX.fbx"/>
+		<Position x="1" y="1" z="1"/>
+		<Components>
+			<Component type="AnimationTest"/>
+			<Component type="Spin"/>
+		</Components>
+	</GameObject>
+	<GameObject id="Man1">
+		<Material id="DefaultMaterial"/>
+		<Model id="C:/Users/Andrew/Documents/GameProject/FBX/ManDX.fbx"/>
+		<Position x="0" y="-1" z="1"/>
+		<Components>
+			<Component type="AnimationTest"/>
+			<Component type="Spin"/>
+		</Components>
+		<ChildObjects>
+			<ChildObject id="Man2"/>
+		</ChildObjects>
 	</GameObject>
 </root>

@@ -20,7 +20,7 @@ namespace d3d
 	D3DApp::D3DApp(int width, int height)
 		: m_width{width}, m_height{height},
 		m_success{CreateD3DApp()},
-		m_scene{*this, "src/d3d/scene.txt" }
+		m_scene{*this, "./src/scene.xml" }
 	{
 		
 	}

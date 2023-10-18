@@ -42,54 +42,13 @@ namespace d3d
 		// Eventually want to turn Camera into a gameObject
 		m_camera = std::make_unique<Camera>(app);
 
-
-
-		//app.getResourceManager().loadScene(app, path);
-		app.getResourceManager().loadSceneXML(app, path);
-
-
-		GameObject* manGO = dynamic_cast<GameObject*>(app.getResourceManager().getResource("Man"));
-		manGO->addComponent(std::make_unique<AnimationTest>(*(manGO)));
-		m_gameObjects.push_back(manGO);
-
-
-		//Material* material = app.getResourceManager().getMaterial();
-		//Material* material = dynamic_cast<Material*>(app.getResourceManager().getResource("DefaultMaterial"));
-
-		//Mesh* mesh = app.getResourceManager().getMesh();
-
-		//ModelData* manModel = dynamic_cast<ModelData*>(app.getResourceManager().getResource("C:/Users/Andrew/Documents/GameProject/FBX/ManDX.fbx"));
-
-		//Mesh* manMesh = manModel->getMesh(0);
-
-		//std::unique_ptr<GameObject> manGO = std::make_unique<GameObject>(app, manMesh, material);
-		//manGO->addComponent(std::make_unique<AnimationTest>(*(manGO.get())));
-		//m_gameObjects.push_back(std::move(manGO));
-
-		/*//Mesh* cubeMesh = app.getResourceManager().getCubeMesh();
-		Mesh* cubeMesh = app.getResourceManager().getMesh("Cube");
-		std::unique_ptr<GameObject> cubeGO = std::make_unique<GameObject>(app, cubeMesh, material);
-		cubeGO->addComponent(std::make_unique<Spin>(*(cubeGO.get())));
-		m_gameObjects.push_back(std::move(cubeGO));*/
-		//manGO->setParent(cubGO.get());
+		m_gameObjects = app.getResourceManager().loadSceneXML(app, path);
 	}
 
 
 	void D3DScene::draw(D3DApp& app)
 	{
 		m_camera->bind(app);
-
-		//app.getResourceManager().getInputLayout()->bind(app);
-
-		//app.getResourceManager().getMaterial()->bind(app);
-		//dynamic_cast<IBindable*>(app.getResourceManager().getResource("DefaultMaterial"))->bind(app);
-
-		//app.getResourceManager().getSamplerState()->bind(app);
-		//dynamic_cast<IBindable*>(app.getResourceManager().getResource("DefaultSamplerState"))->bind(app);
-
-		//app.getResourceManager().getTexture()->bind(app);
-		//dynamic_cast<IBindable*>(app.getResourceManager().getResource("C:/Users/Andrew/Desktop/Blender/LowPolyPalette.png"))->bind(app);
-
 
 		for (auto& gameObject : m_gameObjects)
 		{
@@ -119,6 +78,7 @@ namespace d3d
 	{
 		m_viewProjMatCBuffer.setData(app, projectionMatrix);
 	}
+
 
 	void D3DScene::setBoneTransCBuffer(D3DApp& app, const std::array<DirectX::XMMATRIX, 64>& boneTransforms)
 	{

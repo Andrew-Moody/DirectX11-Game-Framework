@@ -7,7 +7,6 @@
 namespace d3d
 {
 	class GameObject;
-	class Transform;
 
 
 	class Spin : public Component
@@ -24,6 +23,9 @@ namespace d3d
 
 			m_transform.rotate(xRot, yRot, zRot);
 		}
+
+
+		void deserializeXML(D3DApp& app, const tinyxml2::XMLElement* element) override {}
 
 
 		Spin(GameObject& gameObject)

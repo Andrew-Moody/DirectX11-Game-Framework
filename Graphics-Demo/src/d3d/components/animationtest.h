@@ -15,7 +15,6 @@
 namespace d3d
 {
 	class GameObject;
-	class Transform;
 
 
 	class AnimationTest : public Component
@@ -88,6 +87,9 @@ namespace d3d
 			// Apply the changes to the constant buffer
 			app->getScene().setBoneTransCBuffer(*app, boneTransforms);
 		}
+
+
+		void deserializeXML(D3DApp& app, const tinyxml2::XMLElement* element) override {}
 
 
 		AnimationTest(GameObject& gameObject)

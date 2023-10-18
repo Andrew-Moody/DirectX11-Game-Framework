@@ -1,19 +1,28 @@
 #pragma once
 
+#include "iserializable.h"
+
+namespace tinyxml2
+{
+	class XMLElement;
+}
+
 namespace d3d
 {
 	class GameObject;
 	class Transform;
 
-	class Component
+	class Component : public ISerializable
 	{
 	public:
 
 		virtual void update(float deltaTime) = 0;
 
+		void deserializeXML(D3DApp& app, const tinyxml2::XMLElement* element) override = 0;
+
 		Component(GameObject& gameObject);
 
-		virtual inline ~Component() = 0;
+		virtual ~Component() = 0;
 
 	protected:
 
@@ -22,5 +31,5 @@ namespace d3d
 	};
 
 
-	Component::~Component() = default;
+	inline Component::~Component() = default;
 }

@@ -4,6 +4,7 @@
 #include "mesh.h"
 #include "material.h"
 
+#include "components/components.h"
 #include "components/spin.h"
 
 #include "d3dapp.h"
@@ -47,6 +48,54 @@ namespace d3d
 		{
 			m_mesh = m_model->getMesh(0);
 		}
+
+
+		const XMLElement* posElement = element->FirstChildElement("Position");
+
+		if (posElement)
+		{
+			float x = posElement->FloatAttribute("x");
+			float y = posElement->FloatAttribute("y");
+			float z = posElement->FloatAttribute("z");
+
+			m_transform.translate(x, y, z);
+		}
+
+
+		const XMLElement* componentsElement = element->FirstChildElement("Components");
+
+		if (componentsElement)
+		{
+			const XMLElement* current = componentsElement->FirstChildElement();
+
+			while (current)
+			{
+				m_components.push_back(
+					Components::CreateComponent(*this, current->Attribute("type"))
+				);
+
+				current = current->NextSiblingElement();
+			}
+		}
+
+		const XMLElement* childrenElement = element->FirstChildElement("ChildObjects");
+
+		if (childrenElement)
+		{
+			const XMLElement* current = childrenElement->FirstChildElement();
+
+			while (current)
+			{
+				GameObject* child = dynamic_cast<GameObject*>(app.getResourceManager().getResource(current->Attribute("id")));
+
+				if (child)
+				{
+					child->setParent(this);
+				}
+
+				current = current->NextSiblingElement();
+			}
+		}
 	}
 
 
@@ -76,10 +125,10 @@ namespace d3d
 			component->update(deltaTime);
 		}
 
-		for (auto& child : m_children)
+		/*for (auto& child : m_children)
 		{
 			child->update(app, deltaTime);
-		}
+		}*/
 	}
 
 
