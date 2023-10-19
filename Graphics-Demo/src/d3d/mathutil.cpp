@@ -89,8 +89,8 @@ namespace d3d
 
 
 		//std::cout << "Scale: x: " << scale.x << ", y: " << scale.y << ", z: " << scale.z << '\n';
-		//std::cout << "Rotation: x: " << rotation.x * r2d << ", y: " << rotation.y * r2d << ", z: " << rotation.z * r2d << '\n';
-		std::cout << "Position: x: " << position.x << ", y: " << position.y << ", z: " << position.z << '\n';
+		std::cout << "Rotation: x: " << rotation.x * r2d << ", y: " << rotation.y * r2d << ", z: " << rotation.z * r2d << '\n';
+		//std::cout << "Position: x: " << position.x << ", y: " << position.y << ", z: " << position.z << '\n';
 		//std::cout << "Quaternion: w: " << quat.w << " x: " << quat.x << ", y : " << quat.y << ", z : " << quat.z << '\n';
 		//std::cout << "Decomposed from XMFLOAT4X4" << '\n';
 

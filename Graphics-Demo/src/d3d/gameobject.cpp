@@ -1,11 +1,8 @@
 #include "gameobject.h"
 
 #include "transform.h"
-#include "mesh.h"
-#include "material.h"
-
+#include "idrawable.h"
 #include "components/components.h"
-#include "components/spin.h"
 
 #include "d3dapp.h"
 #include "d3dutil.h"
@@ -13,6 +10,7 @@
 #include <tinyxml2.h>
 
 #include <vector>
+#include <iostream>
 
 
 namespace d3d
@@ -25,30 +23,7 @@ namespace d3d
 
 		DB_ASSERT(strcmp(element->Name(), "GameObject") == 0);
 
-		const XMLElement* materialElement = element->FirstChildElement("Material");
-
-		const XMLElement* modelElement = element->FirstChildElement("Model");
-
-		if (!materialElement)
-		{
-			std::cout << "Material missing from gameObject: " << element->Attribute("id") << '\n';
-			return;
-		}
-
-		if (!modelElement)
-		{
-			std::cout << "Model missing from gameObject: " << element->Attribute("id") << '\n';
-			return;
-		}
-
-		m_material = dynamic_cast<Material*>(app.getResourceManager().getResource(materialElement->Attribute("id")));
-		m_model = dynamic_cast<ModelData*>(app.getResourceManager().getResource(modelElement->Attribute("id")));
-
-		if (m_model)
-		{
-			m_mesh = m_model->getMesh(0);
-		}
-
+		m_id = element->Attribute("id");
 
 		const XMLElement* posElement = element->FirstChildElement("Position");
 
@@ -70,11 +45,31 @@ namespace d3d
 
 			while (current)
 			{
-				m_components.push_back(
-					Components::CreateComponent(*this, current->Attribute("type"))
-				);
+				std::unique_ptr<Component> component = Components::CreateComponent(*this, current->Attribute("type"));
+
+				component->Component::deserializeXML(app, current);
+
+				component->deserializeXML(app, current);
+
+				m_components.push_back(std::move(component));
 
 				current = current->NextSiblingElement();
+			}
+
+			// Attempt to find a drawable component
+			for (auto& component : m_components)
+			{
+				IDrawable* drawable = dynamic_cast<IDrawable*>(component.get());
+
+				if (drawable)
+				{
+					if (m_drawable)
+					{
+						std::cout << "GameObject " << m_id << " has multiple drawable components" << '\n';
+					}
+
+					m_drawable = drawable;
+				}
 			}
 		}
 
@@ -101,13 +96,9 @@ namespace d3d
 
 	void GameObject::draw(D3DApp& app)
 	{
-		if (m_mesh && m_material)
+		if (m_drawable)
 		{
-			app.getScene().setWorldMatrix(app, m_transform.getTransformMatrix());
-
-			m_material->bind(app);
-
-			m_mesh->draw(app);
+			m_drawable->draw(app);
 		}
 	}
 
@@ -164,6 +155,20 @@ namespace d3d
 	void GameObject::addComponent(std::unique_ptr<Component> component)
 	{
 		m_components.push_back(std::move(component));
+	}
+
+
+	Component* GameObject::getComponent(const std::string& type)
+	{
+		for (auto& component : m_components)
+		{
+			if (component->getType() == type)
+			{
+				return component.get();
+			}
+		}
+
+		return nullptr;
 	}
 
 

@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
 	<VertexShader id="x64/Debug/vertexshader.cso"/>
+	<VertexShader id="x64/Debug/staticvertexshader.cso"/>
 	<PixelShader id="x64/Debug/pixelshader.cso"/>
 	<SamplerState id="DefaultSamplerState"/>
 	<Texture id="C:/Users/Andrew/Desktop/Blender/LowPolyPalette.png"/>
 	<InputLayout id="DefaultLayout">
 		<VertexShader id="x64/Debug/vertexshader.cso"/>
 	</InputLayout>
-	<Material id="DefaultMaterial">
+	<Material id="StaticMaterial">
+		<InputLayout id="DefaultLayout"/>
+		<VertexShader id="x64/Debug/staticvertexshader.cso"/>
+		<PixelShader id="x64/Debug/pixelshader.cso"/>
+		<SamplerState id="DefaultSamplerState"/>
+		<Texture id="C:/Users/Andrew/Desktop/Blender/LowPolyPalette.png"/>
+	</Material>
+	<Material id="SkinnedMaterial">
 		<InputLayout id="DefaultLayout"/>
 		<VertexShader id="x64/Debug/vertexshader.cso"/>
 		<PixelShader id="x64/Debug/pixelshader.cso"/>
@@ -15,21 +23,37 @@
 		<Texture id="C:/Users/Andrew/Desktop/Blender/LowPolyPalette.png"/>
 	</Material>
 	<Model id="C:/Users/Andrew/Documents/GameProject/FBX/ManDX.fbx"/>
+	<GameObject id="Camera">
+		<Position x="0" y="0" z="1.5"/>
+		<Components>
+			<Component type="Camera">
+				<Frustum fov="1.5708" aspect="1.0" nearZ="0.1" farZ="100"/>
+			</Component>
+		</Components>
+	</GameObject>
 	<GameObject id="Man2">
-		<Material id="DefaultMaterial"/>
-		<Model id="C:/Users/Andrew/Documents/GameProject/FBX/ManDX.fbx"/>
 		<Position x="1" y="1" z="1"/>
 		<Components>
-			<Component type="AnimationTest"/>
+			<Component type="StaticMeshRenderer">
+				<Material id="StaticMaterial"/>
+				<Model id="C:/Users/Andrew/Documents/GameProject/FBX/ManDX.fbx"/>
+			</Component>
 			<Component type="Spin"/>
 		</Components>
 	</GameObject>
 	<GameObject id="Man1">
-		<Material id="DefaultMaterial"/>
-		<Model id="C:/Users/Andrew/Documents/GameProject/FBX/ManDX.fbx"/>
 		<Position x="0" y="-1" z="1"/>
 		<Components>
-			<Component type="AnimationTest"/>
+			<Component type="SkinnedMeshRenderer">
+				<Material id="SkinnedMaterial"/>
+				<Model id="C:/Users/Andrew/Documents/GameProject/FBX/ManDX.fbx"/>
+				<Animations>
+					<Animation name="ManRig|0ManTPose"/>
+					<Animation name="ManRig|ManIdle"/>
+					<Animation name="ManRig|ManWalk"/>
+					<Animation name="ManRig|ManSlash"/>
+				</Animations>
+			</Component>
 			<Component type="Spin"/>
 		</Components>
 		<ChildObjects>

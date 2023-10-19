@@ -172,12 +172,14 @@
     <ClCompile Include="..\Dependencies\tinyxml2\tinyxml2.cpp" />
     <ClCompile Include="src\d3d\animationdata.cpp" />
     <ClCompile Include="src\d3d\components\animationtest.h" />
+    <ClCompile Include="src\d3d\components\camera.cpp" />
     <ClCompile Include="src\d3d\components\components.cpp" />
+    <ClCompile Include="src\d3d\components\skinnedmeshrenderer.cpp" />
+    <ClCompile Include="src\d3d\components\staticmeshrenderer.cpp" />
     <ClCompile Include="src\d3d\mathutil.cpp" />
     <ClCompile Include="src\d3d\skeletondata.cpp" />
     <ClCompile Include="src\d3d\assetloader.cpp" />
     <ClCompile Include="src\d3d\bytecode.cpp" />
-    <ClCompile Include="src\d3d\camera.cpp" />
     <ClCompile Include="src\d3d\component.cpp" />
     <ClCompile Include="src\d3d\constantbuffer.cpp" />
     <ClCompile Include="src\d3d\cube.cpp" />
@@ -204,13 +206,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\d3d\animationdata.h" />
+    <ClInclude Include="src\d3d\components\camera.h" />
     <ClInclude Include="src\d3d\components\components.h" />
+    <ClInclude Include="src\d3d\components\skinnedmeshrenderer.h" />
+    <ClInclude Include="src\d3d\components\staticmeshrenderer.h" />
     <ClInclude Include="src\d3d\iserializable.h" />
     <ClInclude Include="src\d3d\mathutil.h" />
     <ClInclude Include="src\d3d\skeletondata.h" />
     <ClInclude Include="src\d3d\assetloader.h" />
     <ClInclude Include="src\d3d\bytecode.h" />
-    <ClInclude Include="src\d3d\camera.h" />
     <ClInclude Include="src\d3d\component.h" />
     <ClInclude Include="src\d3d\components\spin.h" />
     <ClInclude Include="src\d3d\constantbuffer.h" />
@@ -243,6 +247,13 @@
     <FxCompile Include="src\hlsl\pixelshader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="src\hlsl\staticvertexshader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="src\hlsl\vertexshader.hlsl">

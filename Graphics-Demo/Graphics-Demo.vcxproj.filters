@@ -78,9 +78,6 @@
     <ClCompile Include="src\d3d\d3dscene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\d3d\camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\d3d\assetloader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -132,6 +129,15 @@
     <ClCompile Include="src\d3d\components\components.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\d3d\components\camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\d3d\components\staticmeshrenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\d3d\components\skinnedmeshrenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\d3d\winapp.h">
@@ -180,9 +186,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\d3d\d3dscene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\d3d\camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\d3d\assetloader.h">
@@ -239,10 +242,20 @@
     <ClInclude Include="src\d3d\components\components.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\d3d\components\camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\d3d\components\staticmeshrenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\d3d\components\skinnedmeshrenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\hlsl\vertexshader.hlsl" />
     <FxCompile Include="src\hlsl\pixelshader.hlsl" />
+    <FxCompile Include="src\hlsl\staticvertexshader.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\d3d\scene.txt" />

@@ -1,5 +1,4 @@
 #pragma once
-//#include "animationdata.h"
 
 #include <DirectXMath.h>
 

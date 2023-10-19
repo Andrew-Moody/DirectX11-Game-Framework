@@ -36,10 +36,10 @@ namespace d3d
 			animation->interpolateBone(timeInSeconds, m_boneNames[i], finalTransforms[i]);
 		}
 
-		std::cout << "ToParentTransform for bone: " << m_boneNames[0] << '\n';
+		//std::cout << "ToParentTransform for bone: " << m_boneNames[0] << '\n';
 		//printMatrix(finalTransforms[0]);
-		printDecomp(finalTransforms[0]);
-		std::cout << '\n';
+		//printDecomp(finalTransforms[0]);
+		//std::cout << '\n';
 
 
 		// traverse the skeleton applying accumulated parent transforms to root
@@ -101,18 +101,18 @@ namespace d3d
 		}
 
 
-		/*for (size_t i = 0; i < m_boneNames.size(); ++i)
-		{
-			std::cout << "FinalTransform for bone: " << m_boneNames[i] << '\n';
-			printMatrix(finalTransforms[i]);
-			printDecomp(finalTransforms[i]);
-			std::cout << '\n';
-		}*/
+		//for (size_t i = 0; i < m_boneNames.size(); ++i)
+		//{
+		//	std::cout << "FinalTransform for bone: " << m_boneNames[i] << '\n';
+		//	//printMatrix(finalTransforms[i]);
+		//	printDecomp(finalTransforms[i]);
+		//	std::cout << '\n';
+		//}
 
-		std::cout << "FinalTransform for bone: " << m_boneNames[0] << '\n';
+		//std::cout << "FinalTransform for bone: " << m_boneNames[0] << '\n';
 		//printMatrix(finalTransforms[0]);
-		printDecomp(finalTransforms[0]);
-		std::cout << '\n';
+		//printDecomp(finalTransforms[0]);
+		//std::cout << '\n';
 	}
 
 

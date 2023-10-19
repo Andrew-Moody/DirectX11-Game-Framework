@@ -1,7 +1,10 @@
 #include "material.h"
 
+#include "inputlayout.h"
 #include "vertexshader.h"
 #include "pixelshader.h"
+#include "texture.h"
+#include "samplerstate.h"
 
 #include "d3dapp.h"
 #include "d3dutil.h"

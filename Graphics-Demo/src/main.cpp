@@ -80,12 +80,6 @@ void RunWithoutImGui(int width, int height)
 	{
 		done = d3dApp.CheckMessages();
 
-		d3dApp.SetRenderTargets(&clear_color[0]);
-
-		d3dApp.Draw();
-
-		d3dApp.PresentSwapChain();
-
 		frameTime.tick();
 
 		sumFrameTime += frameTime.deltaTime();
@@ -93,6 +87,12 @@ void RunWithoutImGui(int width, int height)
 		frames++;
 
 		d3dApp.Update(frameTime.deltaTime());
+
+		d3dApp.SetRenderTargets(&clear_color[0]);
+
+		d3dApp.Draw();
+
+		d3dApp.PresentSwapChain();
 	}
 
 	totalTime.tick();

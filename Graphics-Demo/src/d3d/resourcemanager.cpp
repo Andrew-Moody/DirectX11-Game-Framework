@@ -7,8 +7,9 @@
 #include "inputlayout.h"
 #include "vertexshader.h"
 #include "pixelshader.h"
-#include "material.h"
 #include "texture.h"
+#include "material.h"
+#include "samplerstate.h"
 #include "gameobject.h"
 
 #include "meshprimitives.h"

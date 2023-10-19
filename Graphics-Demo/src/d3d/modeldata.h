@@ -43,17 +43,9 @@ namespace d3d
 
 		void processBoneNode(const aiNode* node, const std::unordered_map<const aiNode*, const aiBone*>& skeletonNodes);
 
-		/*struct MeshData
-		{
-			std::vector<Vertex> Vertices;
-			std::vector<uint16_t> Indices;
-		};*/
-
 		D3DApp* m_app;
 
 		const aiScene* m_scene{};
-
-		//std::vector<MeshData> m_meshData;
 
 		std::vector<std::unique_ptr<Mesh>> m_meshes;
 		std::vector<SkeletonData> m_skeletons;

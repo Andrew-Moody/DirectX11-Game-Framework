@@ -1,27 +1,14 @@
 #include "d3dscene.h"
 #include "d3dapp.h"
-#include "idrawable.h"
-#include "camera.h"
-#include "cube.h"
 #include "gameobject.h"
-#include "assetloader.h"
-#include "modeldata.h"
-#include "mesh.h"
-
-#include "bytecode.h"
-#include "inputlayout.h"
-#include "vertexshader.h"
-#include "pixelshader.h"
-#include "material.h"
-
-#include "components/spin.h"
-#include "components/animationtest.h"
+#include "components/camera.h"
 
 #include <DirectXMath.h>
 
 #include <string>
 #include <vector>
 #include <memory>
+#include <iostream>
 
 
 namespace d3d
@@ -39,16 +26,36 @@ namespace d3d
 
 		m_boneTransCBuffer.bind(app);
 
-		// Eventually want to turn Camera into a gameObject
-		m_camera = std::make_unique<Camera>(app);
-
 		m_gameObjects = app.getResourceManager().loadSceneXML(app, path);
+
+		for (auto& gameObject : m_gameObjects)
+		{
+			if (gameObject->getID() == "Camera")
+			{
+				Component* cameraComponent = gameObject->getComponent("Camera");
+
+				m_camera = dynamic_cast<Camera*>(cameraComponent);
+
+				if (m_camera)
+				{
+					break;
+				}
+				else
+				{
+					std::cout << "Camera GameObject missing Camera Component" << '\n';
+				}
+			}
+		}
 	}
 
 
 	void D3DScene::draw(D3DApp& app)
 	{
-		m_camera->bind(app);
+		if (m_camera)
+		{
+			m_viewProjMatCBuffer.setData(app, m_camera->getViewProj());
+		}
+		
 
 		for (auto& gameObject : m_gameObjects)
 		{
@@ -59,8 +66,6 @@ namespace d3d
 
 	void D3DScene::update(D3DApp& app, float deltaTime)
 	{
-		dynamic_cast<Camera*>(m_camera.get())->update(app, deltaTime);
-
 		for (auto& gameObject : m_gameObjects)
 		{
 			gameObject->update(app, deltaTime);

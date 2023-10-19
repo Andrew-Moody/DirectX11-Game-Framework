@@ -4,6 +4,7 @@
 #include "../gameobject.h"
 #include "../transform.h"
 
+#include "../modeldata.h"
 #include "../skeletondata.h"
 #include "../animationdata.h"
 

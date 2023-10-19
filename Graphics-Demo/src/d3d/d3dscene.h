@@ -17,6 +17,7 @@ namespace DirectX
 namespace d3d
 {
 	class D3DApp;
+	class Camera;
 
 	class D3DScene
 	{
@@ -40,7 +41,7 @@ namespace d3d
 
 	private:
 
-		std::unique_ptr<IBindable> m_camera{};
+		Camera* m_camera{};
 
 		//std::vector<std::unique_ptr<GameObject>> m_gameObjects{};
 		std::vector<GameObject*> m_gameObjects{};

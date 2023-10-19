@@ -1,4 +1,7 @@
 #include "inputlayout.h"
+
+#include "vertexshader.h"
+
 #include "d3dapp.h"
 #include "d3dutil.h"
 

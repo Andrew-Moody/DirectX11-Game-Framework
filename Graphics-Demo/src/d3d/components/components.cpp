@@ -2,6 +2,9 @@
 
 #include "spin.h"
 #include "animationtest.h"
+#include "camera.h"
+#include "staticmeshrenderer.h"
+#include "skinnedmeshrenderer.h"
 
 #include <iostream>
 
@@ -24,5 +27,8 @@ namespace d3d
 	std::map<std::string, std::function<std::unique_ptr<Component>(GameObject&)>> Components::m_factoryFunctions = {
 		{ "Spin", [](GameObject& gameObject) { return std::make_unique<Spin>(gameObject); } },
 		{ "AnimationTest", [](GameObject& gameObject) { return std::make_unique<AnimationTest>(gameObject); } },
+		{ "Camera", [](GameObject& gameObject) { return std::make_unique<Camera>(gameObject); } },
+		{ "StaticMeshRenderer", [](GameObject& gameObject) { return std::make_unique<StaticMeshRenderer>(gameObject); } },
+		{ "SkinnedMeshRenderer", [](GameObject& gameObject) { return std::make_unique<SkinnedMeshRenderer>(gameObject); } },
 	};
 }

@@ -1,17 +1,6 @@
 #pragma once
-#include "ibindable.h"
 #include "iserializable.h"
-
 #include "assetloader.h"
-#include "mesh.h"
-
-#include "inputlayout.h"
-#include "vertexshader.h"
-#include "pixelshader.h"
-#include "samplerstate.h"
-#include "texture.h"
-#include "material.h"
-#include "modeldata.h"
 
 #include <memory>
 #include <string>
